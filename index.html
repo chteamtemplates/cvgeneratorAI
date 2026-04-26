@@ -50,7 +50,7 @@
 </script>
 
 <!-- PayPal SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=AZn3j359Qe3klKa5Ecy5t8rRqb4iPr_nCq-1IPzwlrgHJfrzjRWqERqdHghgwuHx9SBbtfcxX7Eoq1Oj&currency=USD&intent=capture"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AZn3j359Qe3klKa5Ecy5t8rRqb4iPr_nCq-1IPzwlrgHJfrzjRWqERqdHghgwuHx9SBbtfcxX7Eoq1Oj&currency=USD&intent=capture&disable-funding=credit,card&components=buttons"></script>
 <script>
   // Plans PayPal
   const PAYPAL_PLANS = {
@@ -673,7 +673,7 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
 /* Stripe checkout overlay */
 .checkout-overlay{position:fixed;inset:0;background:rgba(10,18,40,.75);backdrop-filter:blur(8px);z-index:4000;display:none;align-items:center;justify-content:center;padding:20px}
 .checkout-overlay.open{display:flex;animation:fadein .2s}
-.checkout-box{background:var(--panel-bg);border-radius:20px;padding:32px;width:min(440px,100%);box-shadow:var(--sh4);animation:slideup .3s cubic-bezier(.22,1,.36,1)}
+.checkout-box{background:var(--panel-bg);border-radius:20px;padding:28px;width:min(420px,100%);box-shadow:var(--sh4);animation:slideup .3s cubic-bezier(.22,1,.36,1);max-height:85vh;overflow-y:auto}
 .checkout-box h3{font-family:var(--fd);font-size:1.4rem;margin-bottom:6px;color:var(--page-fg)}
 .checkout-box p{font-size:.88rem;color:var(--muted);margin-bottom:20px}
 #stripe-card-element{padding:13px 14px;border:1.5px solid var(--input-bd);border-radius:10px;background:var(--input-bg);margin-bottom:16px;transition:border .2s}
@@ -1740,7 +1740,7 @@ function openCheckout(planKey){
   const container=$('paypal-button-container');
   if(container && container.children.length===0 && typeof paypal!=='undefined'){
     paypal.Buttons({
-      style:{layout:'vertical',color:'blue',shape:'rect',label:'pay',height:44},
+      style:{layout:'vertical',color:'blue',shape:'rect',label:'paypal',height:44},
       createOrder:function(data,actions){
         const p=PAYPAL_PLANS[authState.currentPlan];
         return actions.order.create({
@@ -1840,10 +1840,11 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
 
 <!-- ══════════════════ CHECKOUT MODAL ══════════════════ -->
 <div class="checkout-overlay" id="checkout-overlay">
+  <button onclick="closeCheckout()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border:none;font-size:1.3rem;color:#fff;cursor:pointer;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:10;backdrop-filter:blur(4px);">×</button>
   <div class="checkout-box">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
       <h3 id="checkout-plan-name">Passer à Pro</h3>
-      <button onclick="closeCheckout()" style="background:none;border:none;font-size:1.4rem;color:var(--muted);cursor:pointer;line-height:1">×</button>
+      <button onclick="closeCheckout()" style="background:var(--panel-bd);border:none;font-size:1.3rem;color:var(--page-fg);cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>
     </div>
     <p id="checkout-plan-desc">Débloquez tous les modèles et l'IA illimitée.</p>
     <div class="checkout-total">
