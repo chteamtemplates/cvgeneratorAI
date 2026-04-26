@@ -680,6 +680,14 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
 #stripe-card-element.focused{border-color:var(--accent)}
 .checkout-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--panel-bd);margin-bottom:16px;font-weight:700;color:var(--page-fg)}
 .checkout-secure{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);margin-top:10px;justify-content:center}
+
+/* Pro Lock */
+.tpl-card.locked{cursor:default}
+.tpl-card.locked:hover{transform:none;box-shadow:none;border-color:var(--panel-bd)}
+.tpl-lock-overlay{position:absolute;inset:0;background:rgba(10,18,40,.55);backdrop-filter:blur(2px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;z-index:2}
+.tpl-lock-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-radius:999px;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.tpl-lock-btn{padding:7px 16px;background:#fff;color:var(--accent);border-radius:8px;font-size:.78rem;font-weight:700;border:none;cursor:pointer;transition:all .2s}
+.tpl-lock-btn:hover{background:var(--accent);color:#fff}
 </style>
 </head>
 <body>
@@ -1154,16 +1162,16 @@ I18N.ar = {
 };
 // ======================= STATE =======================
 const TEMPLATES = [
-  {id:'classic',name:{en:'Classic',fr:'Classique',ar:'كلاسيكي'},desc:{en:'Professional sidebar layout',fr:'Barre latérale professionnelle',ar:'شريط جانبي احترافي'},tag:'popular'},
-  {id:'modern',name:{en:'Modern',fr:'Moderne',ar:'حديث'},desc:{en:'Clean minimalist design',fr:'Design minimaliste épuré',ar:'تصميم بسيط نظيف'},tag:'recommended'},
-  {id:'dark',name:{en:'Dark Side',fr:'Dark Side',ar:'داكن جانبي'},desc:{en:'Dark sidebar with accent',fr:'Barre latérale foncée',ar:'شريط جانبي داكن'}},
-  {id:'elegant',name:{en:'Elegant',fr:'Élégant',ar:'أنيق'},desc:{en:'Refined serif typography',fr:'Typographie serif raffinée',ar:'خط سيريف راقي'}},
-  {id:'creative',name:{en:'Creative',fr:'Créatif',ar:'إبداعي'},desc:{en:'Bold gradient header',fr:'En-tête dégradé audacieux',ar:'ترويسة بتدرج لوني'},tag:'new'},
-  {id:'timeline',name:{en:'Timeline',fr:'Chronologie',ar:'زمني'},desc:{en:'Timeline-based experience',fr:'Expérience chronologique',ar:'تجربة زمنية'}},
-  {id:'academic',name:{en:'Academic',fr:'Académique',ar:'أكاديمي'},desc:{en:'Research-focused 2-column',fr:'Axé recherche 2 colonnes',ar:'بحثي عمودين'}},
-  {id:'tech',name:{en:'Tech',fr:'Tech',ar:'تقني'},desc:{en:'Monospace coder style',fr:'Style codeur monospace',ar:'نمط مبرمج مونوسبيس'}},
-  {id:'bold',name:{en:'Bold',fr:'Audacieux',ar:'جريء'},desc:{en:'Strong header with avatar',fr:'En-tête fort avec avatar',ar:'ترويسة قوية بصورة'},tag:'new'},
-  {id:'corporate',name:{en:'Corporate',fr:'Corporate',ar:'كوربوريت'},desc:{en:'Photo sidebar for business',fr:'Photo barre latérale pro',ar:'صورة جانبية للأعمال'}}
+  {id:'classic',name:{en:'Classic',fr:'Classique',ar:'كلاسيكي'},desc:{en:'Professional sidebar layout',fr:'Barre latérale professionnelle',ar:'شريط جانبي احترافي'},tag:'popular',pro:false},
+  {id:'modern',name:{en:'Modern',fr:'Moderne',ar:'حديث'},desc:{en:'Clean minimalist design',fr:'Design minimaliste épuré',ar:'تصميم بسيط نظيف'},tag:'recommended',pro:false},
+  {id:'dark',name:{en:'Dark Side',fr:'Dark Side',ar:'داكن جانبي'},desc:{en:'Dark sidebar with accent',fr:'Barre latérale foncée',ar:'شريط جانبي داكن'},pro:true},
+  {id:'elegant',name:{en:'Elegant',fr:'Élégant',ar:'أنيق'},desc:{en:'Refined serif typography',fr:'Typographie serif raffinée',ar:'خط سيريف راقي'},pro:true},
+  {id:'creative',name:{en:'Creative',fr:'Créatif',ar:'إبداعي'},desc:{en:'Bold gradient header',fr:'En-tête dégradé audacieux',ar:'ترويسة بتدرج لوني'},tag:'new',pro:true},
+  {id:'timeline',name:{en:'Timeline',fr:'Chronologie',ar:'زمني'},desc:{en:'Timeline-based experience',fr:'Expérience chronologique',ar:'تجربة زمنية'},pro:true},
+  {id:'academic',name:{en:'Academic',fr:'Académique',ar:'أكاديمي'},desc:{en:'Research-focused 2-column',fr:'Axé recherche 2 colonnes',ar:'بحثي عمودين'},pro:true},
+  {id:'tech',name:{en:'Tech',fr:'Tech',ar:'تقني'},desc:{en:'Monospace coder style',fr:'Style codeur monospace',ar:'نمط مبرمج مونوسبيس'},pro:true},
+  {id:'bold',name:{en:'Bold',fr:'Audacieux',ar:'جريء'},desc:{en:'Strong header with avatar',fr:'En-tête fort avec avatar',ar:'ترويسة قوية بصورة'},tag:'new',pro:true},
+  {id:'corporate',name:{en:'Corporate',fr:'Corporate',ar:'كوربوريت'},desc:{en:'Photo sidebar for business',fr:'Photo barre latérale pro',ar:'صورة جانبية للأعمال'},pro:true}
 ];
 const COLORS = [
   {id:'blue',c:'#1d4ed8',c2:'#3b82f6',soft:'#dbeafe'},
@@ -1252,7 +1260,7 @@ function applyI18n(){
   $('lbl-cert').textContent=b.cert;$('btn-add-cert').textContent=b.addCert;
   $('lbl-int').textContent=b.int;$('int-new').placeholder=b.intPh;$('btn-int-add').textContent=b.skAdd;
   // tpl select
-  const sel=$('sel-tpl');if(sel){const cur=sel.value;sel.innerHTML=TEMPLATES.map(tp=>`<option value="${tp.id}">${tp.name[state.lang]}</option>`).join('');sel.value=cur||state.tpl}
+  const sel=$('sel-tpl');if(sel){const cur=sel.value;sel.innerHTML=TEMPLATES.map(tp=>`<option value="${tp.id}" ${tp.pro&&!authState.isPro?'disabled':''}>` + (tp.pro&&!authState.isPro?'🔒 ':'')+`${tp.name[state.lang]}</option>`).join('');sel.value=cur||state.tpl}
   // AI modal
   const a=t.ai2;$('ai-title').textContent=a.title;$('ait-sum').textContent=a.tabs.summary;$('ait-bul').textContent=a.tabs.bullets;$('ait-sk').textContent=a.tabs.skills;$('ait-cov').textContent=a.tabs.cover;$('ait-tr').textContent=a.tabs.translate;
 }
@@ -1270,15 +1278,31 @@ function renderTplGallery(){
   const t=T().tpl;
   g.innerHTML=TEMPLATES.map(tp=>{
     const label=tp.tag?t[tp.tag]:'';
-    return `<div class="tpl-card" onclick="pickTpl('${tp.id}')">
+    const isLocked=tp.pro && !authState.isPro;
+    return `<div class="tpl-card${isLocked?' locked':''}" onclick="${isLocked?`showProLock('${tp.id}')`:`pickTpl('${tp.id}')`}">
       ${label?`<div class="tpl-badge">${label}</div>`:''}
+      ${isLocked?`<div class="tpl-lock-overlay">
+        <div class="tpl-lock-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          PRO
+        </div>
+        <button class="tpl-lock-btn" onclick="event.stopPropagation();openCheckout('pro_monthly')">Débloquer</button>
+      </div>`:''}
       <div class="tpl-prev"><div class="tpl-prev-scale" id="prev-${tp.id}"></div></div>
-      <div class="tpl-meta"><h3>${esc(tp.name[state.lang])}</h3><p>${esc(tp.desc[state.lang])}</p><span class="tpl-use">${esc(t.use)} →</span></div>
+      <div class="tpl-meta"><h3>${esc(tp.name[state.lang])}</h3><p>${esc(tp.desc[state.lang])}</p>${isLocked?'<span style="font-size:.75rem;color:var(--accent);font-weight:700">🔒 Pro</span>':`<span class="tpl-use">${esc(t.use)} →</span>`}</div>
     </div>`;
   }).join('');
   TEMPLATES.forEach(tp=>{const el=$('prev-'+tp.id);if(el)el.innerHTML=renderCV(tp.id,state.color,SAMPLE,state.lang)});
 }
-function pickTpl(id){state.tpl=id;const sel=$('sel-tpl');if(sel)sel.value=id;showBuild()}
+function showProLock(id){
+  if(!authState.user){openAuth('login');return;}
+  openCheckout('pro_monthly');
+}
+function pickTpl(id){
+  const tpl=TEMPLATES.find(t=>t.id===id);
+  if(tpl && tpl.pro && !authState.isPro){showProLock(id);return;}
+  state.tpl=id;const sel=$('sel-tpl');if(sel)sel.value=id;showBuild();
+}
 
 // ======================= FAQ =======================
 function renderFaq(){
@@ -1295,7 +1319,7 @@ function renderBuilder(){
   const pp=$('photo-prev');if(d.photo){pp.innerHTML=`<img src="${d.photo}" alt=""/>`}else{pp.innerHTML=`<span id="photo-hint">${T().b.photoHint}</span>`}
   renderExp();renderEdu();renderSk();renderLng();renderPrj();renderCert();renderInt();
   // template select + color palette
-  const sel=$('sel-tpl');if(sel&&!sel.options.length)sel.innerHTML=TEMPLATES.map(tp=>`<option value="${tp.id}">${tp.name[state.lang]}</option>`).join('');
+  const sel=$('sel-tpl');if(sel&&!sel.options.length)sel.innerHTML=TEMPLATES.map(tp=>`<option value="${tp.id}" ${tp.pro&&!authState.isPro?'disabled':''}>` + (tp.pro&&!authState.isPro?'🔒 ':'')+`${tp.name[state.lang]}</option>`).join('');
   sel.value=state.tpl;
   renderColors();
 }
@@ -1681,6 +1705,10 @@ async function loadUserProfile(user){
   }catch(e){console.error(e);}
 }
 function updateNavAuth(loggedIn){
+  // Re-render template gallery to show/hide locks
+  if(typeof renderTplGallery === 'function'){
+    try{ renderTplGallery(); }catch(e){}
+  }
   const lo=$('nav-loggedout'),li=$('nav-loggedin');if(!lo||!li)return;
   if(loggedIn&&authState.user){
     lo.style.display='none';li.style.display='flex';
