@@ -75,7 +75,7 @@
   // ╚══════════════════════════════════════════════════════╝
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-           signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged
+           signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, onAuthStateChanged
          } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp
          } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -97,7 +97,7 @@
 
   // ─── Expose to global scope for non-module scripts ───
   window._fb = { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-                 signInWithPopup, GoogleAuthProvider: googleProvider, signOut,
+                 signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider: googleProvider, signOut,
                  onAuthStateChanged, doc, getDoc, setDoc, updateDoc, serverTimestamp };
 </script>
 
@@ -1409,7 +1409,7 @@ function renderTplGallery(){
       <div class="tpl-meta"><h3>${esc(tp.name[state.lang])}</h3><p>${esc(tp.desc[state.lang])}</p>${isLocked?'<span style="font-size:.75rem;color:var(--accent);font-weight:700">🔒 Pro</span>':`<span class="tpl-use">${esc(t.use)} →</span>`}</div>
     </div>`;
   }).join('');
-  TEMPLATES.forEach(tp=>{const el=$('prev-'+tp.id);if(el)el.innerHTML=renderCV(tp.id,state.color,SAMPLE,state.lang)});
+  TEMPLATES.forEach((tp,i)=>{setTimeout(()=>{requestAnimationFrame(()=>{const el=$('prev-'+tp.id);if(el)el.innerHTML=renderCV(tp.id,state.color,SAMPLE,state.lang);});},i*40);});
 }
 function showProLock(id){
   if(!authState.user){openAuth('login');return;}
@@ -1820,7 +1820,11 @@ document.addEventListener('DOMContentLoaded',init);
 const authState={user:null,isPro:false,stripe:null,cardElement:null,currentPlan:null};
 function waitForFB(cb,retries=30){if(window._fb){cb();}else if(retries>0){setTimeout(()=>waitForFB(cb,retries-1),200);}}
 waitForFB(()=>{
-  const{auth,onAuthStateChanged}=window._fb;
+  const{auth,onAuthStateChanged,getRedirectResult}=window._fb;
+  // Handle redirect result from mobile Google sign-in
+  getRedirectResult(auth).then(result=>{
+    if(result && result.user){closeAuth();}
+  }).catch(e=>{if(e.code!=='auth/no-current-user')console.warn('Redirect result:',e);});
   onAuthStateChanged(auth,async(user)=>{
     authState.user=user;
     if(user){await loadUserProfile(user);updateNavAuth(true);}
@@ -1913,8 +1917,13 @@ async function doRegister(){
 }
 async function doGoogleLogin(){
   try{
-    const{auth,signInWithPopup,GoogleAuthProvider}=window._fb;
-    await signInWithPopup(auth,GoogleAuthProvider);closeAuth();
+    const{auth,signInWithPopup,signInWithRedirect,getRedirectResult,GoogleAuthProvider}=window._fb;
+    const isMobile=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    if(isMobile){
+      await signInWithRedirect(auth,GoogleAuthProvider);
+    } else {
+      await signInWithPopup(auth,GoogleAuthProvider);closeAuth();
+    }
   }catch(e){if(e.code!=='auth/popup-closed-by-user')toast('Erreur Google: '+e.message,'error');}
 }
 function toggleProfileMenu(){
