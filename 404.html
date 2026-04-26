@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title>CVNova</title>
+  <script>
+    // GitHub Pages SPA redirect: send all 404s back to index.html
+    var path = window.location.pathname;
+    var search = window.location.search;
+    var hash = window.location.hash;
+    var redirect = encodeURIComponent(path + search + hash);
+    window.location.replace('/?redirect=' + redirect);
+  </script>
+</head>
+<body></body>
+</html>
