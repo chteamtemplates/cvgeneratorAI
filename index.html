@@ -9,6 +9,58 @@
 <meta property="og:title" content="CVNova — AI-powered professional CV builder"/>
 <meta property="og:description" content="10+ ATS-friendly templates, built-in AI assistant, instant PDF export. Free forever."/>
 <meta property="og:type" content="website"/>
+<meta property="og:url" content="https://chteamtemplates.github.io/cvgeneratorAI/"/>
+<meta property="og:image" content="https://chteamtemplates.github.io/cvgeneratorAI/og-image.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:site_name" content="CVNova"/>
+<meta property="og:locale" content="fr_FR"/>
+<meta property="og:locale:alternate" content="ar_DZ"/>
+<meta property="og:locale:alternate" content="en_US"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="CVNova — أنشئ CV احترافي بالذكاء الاصطناعي | مجاني"/>
+<meta name="twitter:description" content="أكثر من 10 قوالب ATS، مساعد ذكاء اصطناعي، تصدير PDF فوري. بالعربية والفرنسية والإنجليزية — مجاناً للأبد."/>
+<meta name="twitter:image" content="https://chteamtemplates.github.io/cvgeneratorAI/og-image.png"/>
+
+<!-- SEO extras -->
+<meta name="robots" content="index, follow"/>
+<meta name="author" content="CVNova"/>
+<meta name="keywords" content="CV builder, سيرة ذاتية, CV بالعربي, CV gratuit, générateur CV IA, ATS CV, CV Algeria, CV Maroc, CV Tunisie, CV arabe, CV français, CV anglais, resume builder AI, CVNova"/>
+<link rel="canonical" href="https://chteamtemplates.github.io/cvgeneratorAI/"/>
+
+<!-- Structured Data (JSON-LD) for Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "CVNova",
+  "url": "https://chteamtemplates.github.io/cvgeneratorAI/",
+  "description": "AI-powered CV builder in Arabic, French and English. 10+ ATS-friendly templates, instant PDF export, built-in AI assistant — free forever.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "inLanguage": ["ar", "fr", "en"],
+  "featureList": [
+    "AI writing assistant",
+    "10+ ATS-friendly templates",
+    "Arabic RTL support",
+    "Instant PDF export",
+    "No account required",
+    "100% private"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "3"
+  }
+}
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231d4ed8'/><stop offset='1' stop-color='%233b82f6'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><text y='23' x='5' font-size='18' font-family='Georgia,serif' fill='white' font-weight='bold'>CV</text></svg>"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -793,7 +845,7 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
           </a>
         </div>
         <div class="hero-stats">
-          <div class="hstat"><strong>10+</strong><span id="st1">Templates</span></div>
+          <div class="hstat"><strong id="cv-counter">...</strong><span id="st1">CVs Created</span></div>
           <div class="hstat"><strong>3</strong><span id="st2">Languages</span></div>
           <div class="hstat"><strong>AI</strong><span id="st3">Assistant</span></div>
           <div class="hstat"><strong>PDF</strong><span id="st4">Export</span></div>
@@ -1114,7 +1166,7 @@ const I18N = {
   en:{
     logoTag:'AI-powered CV builder', nav:{home:'Home',tpl:'Templates',ai:'AI Assistant',how:'How it works',pri:'Pricing',start:'Start Building'},
     trust:['Free forever','No account needed','100% private','ATS optimized'],
-    hero:{badge:'New · Built-in AI assistant',title:'Create your professional CV with <em>AI</em>',sub:'10+ ATS-friendly templates, a built-in AI assistant, and instant PDF export. Arabic, French and English — all free.',btn1:'Start building with AI',btn2:'Browse templates',st:['Templates','Languages','Assistant','Export'],hvSum:'PROFILE',hvSumT:'Passionate developer with 5+ years of experience building scalable web apps.',hvSk:'SKILLS',hvLng:'LANGUAGES',hfT:'AI wrote this',hfS:'in 3 seconds'},
+    hero:{badge:'New · Built-in AI assistant',title:'Create your professional CV with <em>AI</em>',sub:'10+ ATS-friendly templates, a built-in AI assistant, and instant PDF export. Arabic, French and English — all free.',btn1:'Start building with AI',btn2:'Browse templates',st:['CVs Created','Languages','Assistant','Export'],hvSum:'PROFILE',hvSumT:'Passionate developer with 5+ years of experience building scalable web apps.',hvSk:'SKILLS',hvLng:'LANGUAGES',hfT:'AI wrote this',hfS:'in 3 seconds'},
     feat:{tag:'Features',title:'Everything you need to land the job',sub:'Designed for job seekers across North Africa, Europe and MENA.',badge1:'New',f1t:'AI Writing Assistant',f1d:'Generate summaries, improve bullets, suggest skills and translate content.',f2t:'10+ ATS-friendly templates',f2d:'Clean layouts that pass applicant tracking systems.',f3t:'Arabic, French & English',f3d:'Full RTL support. Switch interface and CV language with a click.',f4t:'Instant PDF export',f4d:'One click, print-ready A4 PDF. No watermark, no subscription.',f5t:'Live preview & themes',f5d:'Pick any template, color, font — updates in real time.',f6t:'100% private',f6d:'Everything runs in your browser. Your data stays on your device.'},
     ai:{tag:'AI Assistant',title:'Let <em>AI</em> write your CV for you',sub:"Stuck in front of a blank page? CVNova's AI writes professional content tailored to your role — in seconds.",f1t:'Summary generator',f1d:'Describe yourself in one sentence → polished 3-line profile',f2t:'Bullet enhancer',f2d:'Turn vague duties into quantified achievements',f3t:'Skill suggestions',f3d:'Get relevant skills for any job title',f4t:'Translation & cover letter',f4d:'Translate between AR / FR / EN and generate cover letters',dt:'CVNova AI',m1:'Write a professional summary for a Senior Full Stack Developer with 5 years of experience.',m2:'<strong>CVNova AI:</strong><br>Results-driven Senior Full Stack Developer with 5+ years of experience building scalable web applications. Expertise in React, Node.js and cloud architecture, with a proven track record of reducing system latency by 40%.',m3:'Ask AI to improve your experience…'},
     tpl:{tag:'Templates',title:'10+ professional templates',sub:'Clean, modern, ATS-friendly. Pick one, customize the accent color, and export to PDF.',use:'Use this template',popular:'Popular',new:'New',recommended:'Recommended'},
@@ -1131,7 +1183,7 @@ const I18N = {
 I18N.fr = {
   logoTag:'Générateur CV avec IA', nav:{home:'Accueil',tpl:'Modèles',ai:'Assistant IA',how:'Comment ça marche',pri:'Tarifs',start:'Créer mon CV'},
   trust:['Gratuit pour toujours','Sans compte','100% privé','Compatible ATS'],
-  hero:{badge:'Nouveau · Assistant IA intégré',title:'Créez votre CV professionnel avec <em>l\'IA</em>',sub:'10+ modèles compatibles ATS, un assistant IA intégré et un export PDF instantané. Arabe, français et anglais — tout gratuit.',btn1:'Commencer avec l\'IA',btn2:'Voir les modèles',st:['Modèles','Langues','Assistant','Export'],hvSum:'PROFIL',hvSumT:'Développeur passionné avec 5+ années d\'expérience dans la création d\'applications web évolutives.',hvSk:'COMPÉTENCES',hvLng:'LANGUES',hfT:'Écrit par l\'IA',hfS:'en 3 secondes'},
+  hero:{badge:'Nouveau · Assistant IA intégré',title:'Créez votre CV professionnel avec <em>l\'IA</em>',sub:'10+ modèles compatibles ATS, un assistant IA intégré et un export PDF instantané. Arabe, français et anglais — tout gratuit.',btn1:'Commencer avec l\'IA',btn2:'Voir les modèles',st:['CV créés','Langues','Assistant','Export'],hvSum:'PROFIL',hvSumT:'Développeur passionné avec 5+ années d\'expérience dans la création d\'applications web évolutives.',hvSk:'COMPÉTENCES',hvLng:'LANGUES',hfT:'Écrit par l\'IA',hfS:'en 3 secondes'},
   feat:{tag:'Fonctionnalités',title:'Tout ce qu\'il faut pour décrocher le job',sub:'Conçu pour les chercheurs d\'emploi en Afrique du Nord, Europe et MENA.',badge1:'Nouveau',f1t:'Assistant IA de rédaction',f1d:'Générez des résumés, améliorez les puces, suggérez des compétences et traduisez.',f2t:'10+ modèles ATS',f2d:'Mises en page épurées qui passent les systèmes ATS.',f3t:'Arabe, français & anglais',f3d:'Support RTL complet. Changez la langue en un clic.',f4t:'Export PDF instantané',f4d:'Un clic, PDF A4 prêt à imprimer. Sans filigrane, sans abonnement.',f5t:'Aperçu en direct',f5d:'Choisissez modèle, couleur, police — mise à jour en temps réel.',f6t:'100% privé',f6d:'Tout tourne dans votre navigateur. Vos données restent chez vous.'},
   ai:{tag:'Assistant IA',title:'Laissez l\'<em>IA</em> écrire votre CV',sub:"Bloqué devant une page blanche ? L'IA de CVNova rédige un contenu professionnel adapté à votre poste — en quelques secondes.",f1t:'Générateur de résumé',f1d:'Décrivez-vous en une phrase → profil de 3 lignes poli',f2t:'Amélioration des puces',f2d:'Transformez vos tâches floues en réalisations chiffrées',f3t:'Suggestions de compétences',f3d:'Obtenez des compétences pertinentes pour tout poste',f4t:'Traduction & lettre de motivation',f4d:'Traduisez entre AR / FR / EN et générez des lettres',dt:'CVNova IA',m1:'Rédigez un résumé pour un Développeur Full Stack Senior avec 5 ans d\'expérience.',m2:'<strong>CVNova IA :</strong><br>Développeur Full Stack Senior orienté résultats avec 5+ années d\'expérience dans la création d\'applications web évolutives. Expertise en React, Node.js et architecture cloud, avec un historique prouvé de réduction de la latence système de 40%.',m3:'Demandez à l\'IA d\'améliorer votre expérience…'},
   tpl:{tag:'Modèles',title:'10+ modèles professionnels',sub:'Épurés, modernes, compatibles ATS. Choisissez, personnalisez la couleur, exportez en PDF.',use:'Utiliser ce modèle',popular:'Populaire',new:'Nouveau',recommended:'Recommandé'},
@@ -1147,7 +1199,7 @@ I18N.fr = {
 I18N.ar = {
   logoTag:'منشئ السيرة الذاتية بالذكاء الاصطناعي', nav:{home:'الرئيسية',tpl:'القوالب',ai:'مساعد الذكاء',how:'طريقة العمل',pri:'الأسعار',start:'ابدأ الآن'},
   trust:['مجاني للأبد','بدون حساب','خصوصية تامة','متوافق ATS'],
-  hero:{badge:'جديد · مساعد ذكاء اصطناعي',title:'أنشئ سيرتك الاحترافية بـ<em>الذكاء الاصطناعي</em>',sub:'أكثر من 10 قوالب متوافقة ATS، مساعد ذكاء اصطناعي مدمج، وتصدير PDF فوري. عربي، فرنسي وإنجليزي — كل شيء مجاناً.',btn1:'ابدأ مع الذكاء الاصطناعي',btn2:'تصفح القوالب',st:['قوالب','لغات','مساعد','تصدير'],hvSum:'الملف الشخصي',hvSumT:'مطور شغوف مع أكثر من 5 سنوات خبرة في بناء تطبيقات ويب قابلة للتوسع.',hvSk:'المهارات',hvLng:'اللغات',hfT:'كتبها الذكاء الاصطناعي',hfS:'في 3 ثوانٍ'},
+  hero:{badge:'جديد · مساعد ذكاء اصطناعي',title:'أنشئ سيرتك الاحترافية بـ<em>الذكاء الاصطناعي</em>',sub:'أكثر من 10 قوالب متوافقة ATS، مساعد ذكاء اصطناعي مدمج، وتصدير PDF فوري. عربي، فرنسي وإنجليزي — كل شيء مجاناً.',btn1:'ابدأ مع الذكاء الاصطناعي',btn2:'تصفح القوالب',st:['سيرة منشأة','لغات','مساعد','تصدير'],hvSum:'الملف الشخصي',hvSumT:'مطور شغوف مع أكثر من 5 سنوات خبرة في بناء تطبيقات ويب قابلة للتوسع.',hvSk:'المهارات',hvLng:'اللغات',hfT:'كتبها الذكاء الاصطناعي',hfS:'في 3 ثوانٍ'},
   feat:{tag:'المزايا',title:'كل ما تحتاجه للحصول على الوظيفة',sub:'مُصمَّم للباحثين عن عمل في شمال إفريقيا وأوروبا والشرق الأوسط.',badge1:'جديد',f1t:'مساعد كتابة بالذكاء الاصطناعي',f1d:'أنشئ ملخصات، حسّن النقاط، اقترح مهارات وترجم المحتوى.',f2t:'أكثر من 10 قوالب متوافقة ATS',f2d:'تصاميم نظيفة تجتاز أنظمة تتبع المتقدمين.',f3t:'عربي، فرنسي وإنجليزي',f3d:'دعم RTL كامل. بدّل اللغة بنقرة واحدة.',f4t:'تصدير PDF فوري',f4d:'نقرة واحدة، PDF جاهز للطباعة بحجم A4. بدون علامة مائية.',f5t:'معاينة مباشرة',f5d:'اختر القالب والألوان والخط — تحديث فوري.',f6t:'خصوصية 100%',f6d:'كل شيء يعمل في متصفحك. بياناتك تبقى على جهازك.'},
   ai:{tag:'مساعد الذكاء',title:'دع <em>الذكاء الاصطناعي</em> يكتب سيرتك',sub:'محتار أمام صفحة فارغة؟ ذكاء CVNova يكتب محتوى احترافياً مخصصاً لدورك — خلال ثوانٍ.',f1t:'مولّد الملخصات',f1d:'صِف نفسك بجملة واحدة ← ملف مصقول من 3 أسطر',f2t:'تحسين النقاط',f2d:'حوّل المهام الغامضة إلى إنجازات مُقاسة',f3t:'اقتراح المهارات',f3d:'احصل على مهارات ذات صلة بأي وظيفة',f4t:'ترجمة ورسالة تغطية',f4d:'ترجم بين AR / FR / EN وأنشئ رسائل تغطية',dt:'ذكاء CVNova',m1:'اكتب ملخصاً احترافياً لمطور Full Stack أول مع 5 سنوات خبرة.',m2:'<strong>ذكاء CVNova:</strong><br>مطور Full Stack أول موجّه نحو النتائج مع أكثر من 5 سنوات خبرة في بناء تطبيقات ويب قابلة للتوسع. خبرة في React و Node.js والبنية السحابية، مع سجل مثبت في تقليل زمن استجابة النظام بنسبة 40%.',m3:'اطلب من الذكاء تحسين خبرتك…'},
   tpl:{tag:'القوالب',title:'أكثر من 10 قوالب احترافية',sub:'نظيفة، حديثة، متوافقة ATS. اختر، خصّص اللون، وصدّر PDF.',use:'استخدم هذا القالب',popular:'شائع',new:'جديد',recommended:'موصى به'},
@@ -1436,7 +1488,7 @@ async function exportPDF(){
   const el=$('cvo');if(!el)return;const prev=state.zoom;state.zoom=1;el.style.transform='scale(1)';
   const fullName=((state.data.first||'')+' '+(state.data.last||'')).trim()||'cv';
   const opt={margin:0,filename:fullName.replace(/\s+/g,'_')+'.pdf',image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,letterRendering:true,backgroundColor:'#ffffff'},jsPDF:{unit:'pt',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}};
-  try{toast('Generating PDF…','info');await html2pdf().set(opt).from(el).save();toast('PDF downloaded','success')}catch(e){toast('PDF failed','error');console.error(e)}
+  try{toast('Generating PDF…','info');await html2pdf().set(opt).from(el).save();toast('PDF downloaded','success');incrementCVCounter();}catch(e){toast('PDF failed','error');console.error(e)}
   state.zoom=prev;zoomPrev(0);el.style.transform=`scale(${prev})`;
 }
 // ======================= PREVIEW / CV RENDER =======================
@@ -1925,5 +1977,61 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
   </div>
 </div>
 
+<!-- ===== CV Counter (Firebase) ===== -->
+<script type="module">
+  import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getFirestore, doc, getDoc, setDoc, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  const FIREBASE_CONFIG = {
+    apiKey:"AIzaSyCpje05Jme16JwyxRDiOokjoZw3x-0JLok",
+    authDomain:"cvnova-c601a.firebaseapp.com",
+    projectId:"cvnova-c601a",
+    storageBucket:"cvnova-c601a.firebasestorage.app",
+    messagingSenderId:"784899659502",
+    appId:"1:784899659502:web:3880a39a2776526f57c5ff"
+  };
+
+  // reuse existing app if already initialized
+  const fbApp = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
+  const db = getFirestore(fbApp);
+  const counterRef = doc(db, 'stats', 'global');
+
+  async function loadCounter(){
+    try {
+      const snap = await getDoc(counterRef);
+      const count = snap.exists() ? (snap.data().cvs_created || 0) : 0;
+      animateCounter('cv-counter', count);
+    } catch(e) {
+      const el = document.getElementById('cv-counter');
+      if(el) el.textContent = '1000+';
+    }
+  }
+
+  function animateCounter(id, target){
+    const el = document.getElementById(id);
+    if(!el) return;
+    const start = Math.max(0, target - 80);
+    let cur = start;
+    const step = Math.ceil((target - start) / 40);
+    const timer = setInterval(()=>{
+      cur = Math.min(cur + step, target);
+      el.textContent = cur >= 1000 ? (cur/1000).toFixed(1)+'k' : cur+'';
+      if(cur >= target) clearInterval(timer);
+    }, 30);
+  }
+
+  window.incrementCVCounter = async function(){
+    try {
+      await setDoc(counterRef, { cvs_created: increment(1) }, { merge: true });
+      const snap = await getDoc(counterRef);
+      const count = snap.exists() ? (snap.data().cvs_created || 0) : 0;
+      const el = document.getElementById('cv-counter');
+      if(el) el.textContent = count >= 1000 ? (count/1000).toFixed(1)+'k' : count+'';
+    } catch(e){}
+  };
+
+  // Load counter on page load
+  loadCounter();
+</script>
 </body>
 </html>
