@@ -186,7 +186,7 @@ body.ar .logo-text{font-family:var(--fad);font-size:1.4rem}
 .mmenu a{padding:12px 16px;border-radius:10px;font-size:1rem;font-weight:500;color:var(--page-fg)}
 .mmenu a:hover{background:var(--subtle);color:var(--accent)}
 .mmenu-bot{display:flex;gap:10px;margin-top:8px;padding-top:16px;border-top:1px solid var(--panel-bd)}
-@media (max-width:900px){.nav-links{display:none}.btn-nav-cta{display:none}.hmbg{display:flex}.lang-toggle{display:none}.icon-btn{display:none}}
+@media (max-width:900px){.nav-links{display:none}.btn-nav-cta{display:none}.hmbg{display:flex}.lang-toggle{display:none}.icon-btn{display:none}.nav-user-name{display:none}}
 
 /* HERO */
 .hero{position:relative;padding:130px 0 90px;overflow:hidden;background:linear-gradient(180deg,var(--page-bg) 0%,var(--subtle) 100%)}
@@ -230,6 +230,7 @@ html[data-theme="dark"] .hero-cv{box-shadow:var(--sh4),0 0 0 1px #1c2844}
 .hero-float strong{display:block;font-size:.85rem;font-weight:700;color:var(--page-fg)}
 .hero-float span{font-size:.72rem;color:var(--muted)}
 @media (max-width:960px){.hero-in{grid-template-columns:1fr;gap:48px}.hero-visual{max-width:420px;margin:0 auto}}
+@media(max-width:520px){.hero-ctas,.cta-btns,.hero-cta-wrap{flex-direction:column!important;gap:10px!important}.hero-ctas .btn,.cta-btns .btn{width:100%;justify-content:center}}
 .trust-bar{max-width:1000px;margin:-36px auto 0;padding:16px 36px;background:var(--panel-bg);border:1px solid var(--panel-bd);border-radius:50px;box-shadow:var(--sh2);display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap;position:relative;z-index:5}
 .trust-item{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);font-weight:500}
 .trust-item svg{color:var(--grn)}
@@ -286,7 +287,7 @@ body.ar .ai-msg.bot{margin-right:0;margin-left:20px}
 @media (max-width:860px){.ai-wrap{grid-template-columns:1fr}}
 
 /* TEMPLATES GALLERY */
-.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
 .tpl-card{position:relative;background:var(--panel-bg);border:1px solid var(--panel-bd);border-radius:var(--r-lg);overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;cursor:pointer}
 .tpl-card:hover{transform:translateY(-6px);box-shadow:var(--sh3);border-color:var(--accent)}
 .tpl-card.selected{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
@@ -658,7 +659,7 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
    AUTH SYSTEM — Firebase + Stripe
    ============================================================ */
 /* Auth Modal */
-.auth-overlay{position:fixed;inset:0;background:rgba(10,18,40,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:3000;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.auth-overlay{position:fixed;inset:0;background:rgba(10,18,40,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:5000;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
 .auth-overlay.open{display:flex;animation:fadein .2s}
 .auth-box{background:var(--panel-bg);border:1px solid var(--panel-bd);border-radius:24px;box-shadow:var(--sh4);width:min(460px,100%);animation:slideup .3s cubic-bezier(.22,1,.36,1);position:relative;margin:auto}
 .auth-head{padding:28px 32px 0;text-align:center}
@@ -723,7 +724,7 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
 @media(max-width:860px){.plans-grid{grid-template-columns:1fr}}
 
 /* Stripe checkout overlay */
-.checkout-overlay{position:fixed;inset:0;background:rgba(10,18,40,.75);backdrop-filter:blur(8px);z-index:4000;display:none;align-items:center;justify-content:center;padding:20px}
+.checkout-overlay{position:fixed;inset:0;background:rgba(10,18,40,.75);backdrop-filter:blur(8px);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .checkout-overlay.open{display:flex;animation:fadein .2s}
 .checkout-box{background:var(--panel-bg);border-radius:20px;padding:28px;width:min(420px,100%);box-shadow:var(--sh4);animation:slideup .3s cubic-bezier(.22,1,.36,1);max-height:85vh;overflow-y:auto}
 .checkout-box h3{font-family:var(--fd);font-size:1.4rem;margin-bottom:6px;color:var(--page-fg)}
@@ -740,6 +741,52 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
 .tpl-lock-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-radius:999px;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .tpl-lock-btn{padding:7px 16px;background:#fff;color:var(--accent);border-radius:8px;font-size:.78rem;font-weight:700;border:none;cursor:pointer;transition:all .2s}
 .tpl-lock-btn:hover{background:var(--accent);color:#fff}
+
+/* ═══════════ MOBILE RESPONSIVE FIXES ═══════════ */
+/* Mob tabs builder */
+.mob-tabs{display:none;gap:0;background:var(--panel-bg);border:1.5px solid var(--panel-bd);border-radius:12px;overflow:hidden;margin:10px 14px 0}
+.mob-tab{flex:1;padding:11px 6px;font-size:.85rem;font-weight:700;border:none;background:none;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.mob-tab.on{background:var(--accent);color:#fff}
+
+@media(max-width:760px){
+  /* Show tabs */
+  .mob-tabs{display:flex}
+  /* Builder layout */
+  .build-body{padding:10px 12px;gap:12px}
+  .fp{display:none}
+  .fp.mob-show{display:block}
+  .build-prev{display:none}
+  .build-prev.mob-show{display:block}
+  /* CV preview fits screen */
+  #cvo{width:100%!important;font-size:60%}
+  #cvo-wrap{overflow-x:auto}
+  /* Build toolbar */
+  .build-top{padding:6px 12px;gap:6px;flex-wrap:wrap}
+  .btool{font-size:.74rem;padding:5px 6px}
+  .build-top-left{gap:6px;flex-wrap:wrap}
+  .build-top-right{gap:6px}
+  /* Hide zoom on mobile */
+  .zoom-ctrl{display:none}
+}
+
+@media(max-width:480px){
+  /* Hero */
+  .hero-title{font-size:2.1rem!important}
+  .hero-sub{font-size:.95rem}
+  .hero-ctas{flex-direction:column;gap:10px}
+  .hero-ctas .btn,.hero-ctas a{width:100%;justify-content:center;text-align:center}
+  /* Template grid 2 columns */
+  .tpl-grid{grid-template-columns:1fr 1fr!important;gap:10px}
+  .tpl-card{border-radius:10px}
+  /* Pricing */
+  .price-card{padding:22px 16px}
+  /* Nav - hide username */
+  .nav-user-name{display:none}
+  /* Auth modal padding */
+  .auth-body{padding:18px 20px 22px}
+  /* Steps */
+  .steps{grid-template-columns:1fr!important}
+}
 </style>
 </head>
 <body>
@@ -816,13 +863,27 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
   <a href="#ai-sec" id="mm-ai" onclick="closeMenu()">AI Assistant</a>
   <a href="#how-sec" id="mm-how" onclick="closeMenu()">How it works</a>
   <a href="#pricing-sec" id="mm-pri" onclick="closeMenu()">Pricing</a>
-  <div class="mmenu-bot">
-    <div class="lang-toggle" style="display:flex">
-      <button class="lbtn" id="mbtn-en" onclick="setLang('en')">EN</button>
-      <button class="lbtn on" id="mbtn-fr" onclick="setLang('fr')">FR</button>
-      <button class="lbtn" id="mbtn-ar" onclick="setLang('ar')">عربي</button>
+  <div class="mmenu-bot" style="flex-direction:column;gap:10px">
+    <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+      <div class="lang-toggle" style="display:flex">
+        <button class="lbtn" id="mbtn-en" onclick="setLang('en')">EN</button>
+        <button class="lbtn on" id="mbtn-fr" onclick="setLang('fr')">FR</button>
+        <button class="lbtn" id="mbtn-ar" onclick="setLang('ar')">عربي</button>
+      </div>
+      <button class="btn-nav-cta" style="flex:1;margin-left:8px" id="mm-start" onclick="showBuild();closeMenu()">Start Building</button>
     </div>
-    <button class="btn-nav-cta" style="flex:1" id="mm-start" onclick="showBuild();closeMenu()">Start Building</button>
+    <!-- Auth buttons in mobile menu -->
+    <div id="mm-loggedout" style="display:flex;gap:8px">
+      <button onclick="openAuth('login');closeMenu()" style="flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--panel-bd);background:var(--panel-bg);color:var(--page-fg);font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit" id="mm-login-btn">Se connecter</button>
+      <button onclick="openAuth('register');closeMenu()" style="flex:1;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit">S'inscrire</button>
+    </div>
+    <div id="mm-loggedin" style="display:none;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--subtle);border-radius:10px">
+      <div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--page-fg)" id="mm-user-name"></div>
+        <div id="mm-user-plan" style="font-size:.72rem;color:var(--accent);font-weight:600">Plan Gratuit</div>
+      </div>
+      <button onclick="doSignOut();closeMenu()" style="padding:7px 14px;border-radius:8px;border:1.5px solid var(--red);color:var(--red);background:none;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit">Déconnexion</button>
+    </div>
   </div>
 </div>
 <!-- LANDING -->
@@ -1057,8 +1118,12 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
       <button class="btool primary" onclick="exportPDF()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span id="bt-pdf">Download PDF</span></button>
     </div>
   </div>
+  <div class="mob-tabs" id="mob-tabs">
+    <button class="mob-tab on" id="mob-tab-form" onclick="mobTab('form')">✏️ Formulaire</button>
+    <button class="mob-tab" id="mob-tab-prev" onclick="mobTab('prev')">👁️ Aperçu</button>
+  </div>
   <div class="build-body">
-    <div class="fp">
+    <div class="fp mob-show" id="build-form-panel">
       <div class="fp-title" id="fp-title">Build your CV</div>
       <div class="fp-sub" id="fp-sub">Fill the fields below — preview updates live.</div>
 
@@ -1126,7 +1191,7 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
       </div>
     </div>
 
-    <div class="pp">
+    <div class="pp build-prev" id="build-prev-panel">
       <div class="pp-toolbar">
         <div class="pp-lbl"><div class="pp-live-dot"></div><span id="pp-live">Live preview</span></div>
         <div class="zoom"><button onclick="zoomPrev(-.1)">−</button><span id="zoom-val">100%</span><button onclick="zoomPrev(.1)">+</button><button onclick="zoomPrev(0)">⟲</button></div>
@@ -1248,7 +1313,7 @@ const SAMPLE = {
 };
 function emptyData(){return{first:'',last:'',title:'',email:'',phone:'',loc:'',web:'',photo:'',sum:'',exp:[],edu:[],sk:[],lng:[],prj:[],cert:[],int:[]}}
 
-const state = {lang:'fr',theme:'light',page:'land',tpl:'classic',color:COLORS[0],zoom:1,data:JSON.parse(JSON.stringify(SAMPLE)),aiTab:'summary',aiBusy:false,aiLast:''};
+const state = {lang:(()=>{try{const l=localStorage.getItem('cvnova-lang');if(l&&['en','fr','ar'].includes(l))return l;}catch(e){}return 'fr';})(),theme:'light',page:'land',tpl:'classic',color:COLORS[0],zoom:1,data:JSON.parse(JSON.stringify(SAMPLE)),aiTab:'summary',aiBusy:false,aiLast:''};
 
 // ======================= HELPERS =======================
 const $=id=>document.getElementById(id);
@@ -1731,6 +1796,22 @@ function init(){
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAI()});
   // lang persistence is handled inside setLang()
 }
+
+// ═══ MOBILE TABS ═══
+function mobTab(tab){
+  const formP=$('build-form-panel'), prevP=$('build-prev-panel');
+  const tForm=$('mob-tab-form'), tPrev=$('mob-tab-prev');
+  if(!formP||!prevP) return;
+  if(tab==='form'){
+    formP.classList.add('mob-show'); prevP.classList.remove('mob-show');
+    tForm.classList.add('on'); tPrev.classList.remove('on');
+  } else {
+    prevP.classList.add('mob-show'); formP.classList.remove('mob-show');
+    tPrev.classList.add('on'); tForm.classList.remove('on');
+    renderPreview();
+  }
+}
+
 document.addEventListener('DOMContentLoaded',init);
 
 // ════════════════════════════════════════════════════════════
@@ -1761,6 +1842,17 @@ function updateNavAuth(loggedIn){
   if(typeof renderTplGallery === 'function'){
     try{ renderTplGallery(); }catch(e){}
   }
+  // Update mobile menu button text
+  const mmLoginBtn=$('mm-login-btn');
+  if(mmLoginBtn){
+    const loginTxt={en:'Sign in',fr:'Se connecter',ar:'تسجيل الدخول'};
+    mmLoginBtn.textContent=loginTxt[l]||loginTxt.fr;
+  }
+  const mmStart=$('mm-start');
+  if(mmStart){
+    const startTxt={en:'Start Building',fr:'Commencer',ar:'ابدأ الآن'};
+    mmStart.textContent=startTxt[l]||startTxt.fr;
+  }
   const lo=$('nav-loggedout'),li=$('nav-loggedin');if(!lo||!li)return;
   if(loggedIn&&authState.user){
     lo.style.display='none';li.style.display='flex';
@@ -1769,6 +1861,16 @@ function updateNavAuth(loggedIn){
     $('nav-avatar').textContent=initials;$('nav-user-name').textContent=name;
     const pb=$('nav-pro-badge');if(pb)pb.style.display=authState.isPro?'inline-flex':'none';
   }else{lo.style.display='flex';li.style.display='none';}
+  // Sync mobile menu
+  const mmOut=$('mm-loggedout'),mmIn=$('mm-loggedin');
+  if(mmOut&&mmIn){
+    if(loggedIn&&authState.user){
+      mmOut.style.display='none';mmIn.style.display='flex';
+      const name=authState.user.displayName||authState.user.email.split('@')[0];
+      const mmName=$('mm-user-name');if(mmName)mmName.textContent=name;
+      const mmPlan=$('mm-user-plan');if(mmPlan)mmPlan.textContent=authState.isPro?'Plan Pro ⭐':'Plan Gratuit';
+    }else{mmOut.style.display='flex';mmIn.style.display='none';}
+  }
 }
 function openAuth(tab='login'){$('auth-overlay').classList.add('open');authTab(tab);}
 function closeAuth(){$('auth-overlay').classList.remove('open');}
