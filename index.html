@@ -186,7 +186,7 @@ body.ar .logo-text{font-family:var(--fad);font-size:1.4rem}
 .mmenu a{padding:12px 16px;border-radius:10px;font-size:1rem;font-weight:500;color:var(--page-fg)}
 .mmenu a:hover{background:var(--subtle);color:var(--accent)}
 .mmenu-bot{display:flex;gap:10px;margin-top:8px;padding-top:16px;border-top:1px solid var(--panel-bd)}
-@media (max-width:900px){.nav-links{display:none}.btn-nav-cta{display:none}.hmbg{display:flex}.lang-toggle{display:none}.icon-btn{display:none}.nav-user-name{display:none}}
+@media (max-width:900px){.nav-links{display:none}.btn-nav-cta{display:none}.hmbg{display:flex}.lang-toggle{display:none}.nav-user-name{display:none}#nav-loggedin{display:none}#nav-loggedin.active{display:flex!important}#nav-loggedin .nav-avatar{display:flex!important}}
 
 /* HERO */
 .hero{position:relative;padding:130px 0 90px;overflow:hidden;background:linear-gradient(180deg,var(--page-bg) 0%,var(--subtle) 100%)}
@@ -1821,10 +1821,18 @@ const authState={user:null,isPro:false,stripe:null,cardElement:null,currentPlan:
 function waitForFB(cb,retries=30){if(window._fb){cb();}else if(retries>0){setTimeout(()=>waitForFB(cb,retries-1),200);}}
 waitForFB(()=>{
   const{auth,onAuthStateChanged,getRedirectResult}=window._fb;
-  // Handle redirect result from mobile Google sign-in
+  // Handle redirect result (iOS Safari Google login)
   getRedirectResult(auth).then(result=>{
-    if(result && result.user){closeAuth();}
-  }).catch(e=>{if(e.code!=='auth/no-current-user')console.warn('Redirect result:',e);});
+    if(result && result.user){
+      sessionStorage.removeItem('cvnova_redirect_auth');
+      closeAuth();
+      toast('Connecté avec Google !','success');
+    }
+  }).catch(e=>{
+    if(e && e.code && e.code!=='auth/null-user' && e.code!=='auth/no-current-user'){
+      console.warn('Auth redirect error:',e.code);
+    }
+  });
   onAuthStateChanged(auth,async(user)=>{
     authState.user=user;
     if(user){await loadUserProfile(user);updateNavAuth(true);}
@@ -1859,12 +1867,14 @@ function updateNavAuth(loggedIn){
   }
   const lo=$('nav-loggedout'),li=$('nav-loggedin');if(!lo||!li)return;
   if(loggedIn&&authState.user){
-    lo.style.display='none';li.style.display='flex';
+    lo.style.display='none';
+    li.style.display='flex';
+    li.classList.add('active');
     const name=authState.user.displayName||authState.user.email.split('@')[0];
     const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     $('nav-avatar').textContent=initials;$('nav-user-name').textContent=name;
     const pb=$('nav-pro-badge');if(pb)pb.style.display=authState.isPro?'inline-flex':'none';
-  }else{lo.style.display='flex';li.style.display='none';}
+  }else{lo.style.display='flex';li.style.display='none';li.classList.remove('active');}
   // Sync mobile menu
   const mmOut=$('mm-loggedout'),mmIn=$('mm-loggedin');
   if(mmOut&&mmIn){
@@ -1892,8 +1902,14 @@ async function doLogin(){
   btn.disabled=true;btn.textContent='Connexion...';
   try{
     const{auth,signInWithEmailAndPassword}=window._fb;
-    await signInWithEmailAndPassword(auth,email,pass);
-    msg.className='auth-msg ok';msg.textContent='Connecte!';setTimeout(closeAuth,800);
+    const cred=await signInWithEmailAndPassword(auth,email,pass);
+    const user=cred.user;
+    authState.user=user;
+    authState.isPro=false;
+    await loadUserProfile(user);
+    updateNavAuth(true);
+    msg.className='auth-msg ok';msg.textContent='Connecté !';
+    setTimeout(closeAuth,800);
   }catch(e){
     msg.className='auth-msg err';
     msg.textContent=e.code==='auth/invalid-credential'?'Email ou mot de passe incorrect.':e.code==='auth/too-many-requests'?'Trop de tentatives.':'Erreur: '+e.message;
@@ -1909,7 +1925,13 @@ async function doRegister(){
     const{auth,createUserWithEmailAndPassword,db,doc,setDoc,serverTimestamp}=window._fb;
     const cred=await createUserWithEmailAndPassword(auth,email,pass);
     await setDoc(doc(db,'users',cred.user.uid),{uid:cred.user.uid,email,name,plan:'free',createdAt:serverTimestamp()});
-    msg.className='auth-msg ok';msg.textContent='Compte cree!';setTimeout(closeAuth,900);
+    // Force immediate UI update — don't wait for onAuthStateChanged
+    authState.user=cred.user;
+    authState.isPro=false;
+    await loadUserProfile(cred.user);
+    updateNavAuth(true);
+    msg.className='auth-msg ok';msg.textContent='Compte créé !';
+    setTimeout(closeAuth,900);
   }catch(e){
     msg.className='auth-msg err';
     msg.textContent=e.code==='auth/email-already-in-use'?'Email deja utilise.':e.code==='auth/weak-password'?'Mot de passe trop faible.':'Erreur: '+e.message;
@@ -1917,13 +1939,17 @@ async function doRegister(){
 }
 async function doGoogleLogin(){
   try{
-    const{auth,signInWithPopup,signInWithRedirect,getRedirectResult,GoogleAuthProvider}=window._fb;
-    const isMobile=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-    if(isMobile){
+    const{auth,signInWithPopup,signInWithRedirect,GoogleAuthProvider}=window._fb;
+    const isSafariMobile=/iP(hone|ad|od)/i.test(navigator.userAgent)&&/WebKit/i.test(navigator.userAgent);
+    if(isSafariMobile){
+      // Safari iOS blocks popups in async context — use redirect instead
+      // Store intended destination to restore after redirect
+      sessionStorage.setItem('cvnova_redirect_auth','1');
       await signInWithRedirect(auth,GoogleAuthProvider);
-    } else {
-      await signInWithPopup(auth,GoogleAuthProvider);closeAuth();
+      return;
     }
+    const result = await signInWithPopup(auth,GoogleAuthProvider);
+    if(result && result.user){closeAuth();}
   }catch(e){if(e.code!=='auth/popup-closed-by-user')toast('Erreur Google: '+e.message,'error');}
 }
 function toggleProfileMenu(){
