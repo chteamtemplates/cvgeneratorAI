@@ -870,6 +870,10 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
         <button class="lbtn on" id="mbtn-fr" onclick="setLang('fr')">FR</button>
         <button class="lbtn" id="mbtn-ar" onclick="setLang('ar')">عربي</button>
       </div>
+      <button class="icon-btn" id="mm-btn-theme" onclick="toggleTheme()" title="Theme" aria-label="Theme" style="margin-left:8px">
+        <svg id="mm-ic-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg id="mm-ic-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <button class="btn-nav-cta" style="flex:1;margin-left:8px" id="mm-start" onclick="showBuild();closeMenu()">Start Building</button>
     </div>
     <!-- Auth buttons in mobile menu -->
@@ -1382,7 +1386,7 @@ function applyI18n(){
   const a=t.ai2;$('ai-title').textContent=a.title;$('ait-sum').textContent=a.tabs.summary;$('ait-bul').textContent=a.tabs.bullets;$('ait-sk').textContent=a.tabs.skills;$('ait-cov').textContent=a.tabs.cover;$('ait-tr').textContent=a.tabs.translate;
 }
 
-function toggleTheme(){state.theme=state.theme==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',state.theme);$('ic-sun').style.display=state.theme==='light'?'block':'none';$('ic-moon').style.display=state.theme==='dark'?'block':'none';try{localStorage.setItem('cvnova-theme',state.theme)}catch(e){}}
+function toggleTheme(){state.theme=state.theme==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',state.theme);var sl=state.theme==='light'?'block':'none',sd=state.theme==='dark'?'block':'none';$('ic-sun').style.display=sl;$('ic-moon').style.display=sd;var ms=$('mm-ic-sun'),mm=$('mm-ic-moon');if(ms)ms.style.display=sl;if(mm)mm.style.display=sd;try{localStorage.setItem('cvnova-theme',state.theme)}catch(e){}}
 function togMenu(){const m=$('mmenu'),b=$('hmbg');m.classList.toggle('open');b.classList.toggle('open')}
 function closeMenu(){$('mmenu').classList.remove('open');$('hmbg').classList.remove('open')}
 function showLand(){state.page='land';$('pg-land').style.display='block';$('pg-build').style.display='none';window.scrollTo({top:0,behavior:'smooth'})}
@@ -1786,7 +1790,7 @@ function copyAI(){if(!state.aiLast)return;navigator.clipboard&&navigator.clipboa
 function onScroll(){const n=$('navbar');if(!n)return;n.classList.toggle('scrolled',window.scrollY>20)}
 function initReveal(){const els=document.querySelectorAll('.rv');const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -50px 0px'});els.forEach(el=>io.observe(el))}
 function init(){
-  try{const t=localStorage.getItem('cvnova-theme');if(t==='dark'){state.theme='dark';document.documentElement.setAttribute('data-theme','dark');$('ic-sun').style.display='none';$('ic-moon').style.display='block'}}catch(e){}
+  try{const t=localStorage.getItem('cvnova-theme');if(t==='dark'){state.theme='dark';document.documentElement.setAttribute('data-theme','dark');$('ic-sun').style.display='none';$('ic-moon').style.display='block';var ms=$('mm-ic-sun'),mm=$('mm-ic-moon');if(ms)ms.style.display='none';if(mm)mm.style.display='block'}}catch(e){}
   try{const l=localStorage.getItem('cvnova-lang');if(l&&I18N[l])state.lang=l}catch(e){}
   setLang(state.lang);
   initReveal();
