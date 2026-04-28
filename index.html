@@ -1829,9 +1829,10 @@ waitForFB(()=>{
       toast('Connecté avec Google !','success');
     }
   }).catch(e=>{
-    if(e && e.code && e.code!=='auth/null-user' && e.code!=='auth/no-current-user'){
-      console.warn('Auth redirect error:',e.code);
-    }
+    sessionStorage.removeItem('cvnova_redirect_auth');
+    if(!e) return;
+    if(e.code==='auth/redirect-cancelled-by-user'||e.code==='auth/popup-closed-by-user') return;
+    console.warn('Auth redirect error:',e.code||e.message);
   });
   onAuthStateChanged(auth,async(user)=>{
     authState.user=user;
@@ -1906,7 +1907,7 @@ async function doLogin(){
     const user=cred.user;
     authState.user=user;
     authState.isPro=false;
-    await loadUserProfile(user);
+    try{await loadUserProfile(user);}catch(pe){console.error('Profile load error:',pe);}
     updateNavAuth(true);
     msg.className='auth-msg ok';msg.textContent='Connecté !';
     setTimeout(closeAuth,800);
@@ -1928,7 +1929,7 @@ async function doRegister(){
     // Force immediate UI update — don't wait for onAuthStateChanged
     authState.user=cred.user;
     authState.isPro=false;
-    await loadUserProfile(cred.user);
+    try{await loadUserProfile(cred.user);}catch(pe){console.error('Profile load error:',pe);}
     updateNavAuth(true);
     msg.className='auth-msg ok';msg.textContent='Compte créé !';
     setTimeout(closeAuth,900);
@@ -1940,9 +1941,9 @@ async function doRegister(){
 async function doGoogleLogin(){
   try{
     const{auth,signInWithPopup,signInWithRedirect,GoogleAuthProvider}=window._fb;
-    const isSafariMobile=/iP(hone|ad|od)/i.test(navigator.userAgent)&&/WebKit/i.test(navigator.userAgent);
-    if(isSafariMobile){
-      // Safari iOS blocks popups in async context — use redirect instead
+    const isIOSBrowser=/iP(hone|ad|od)/i.test(navigator.userAgent)&&/WebKit/i.test(navigator.userAgent);
+    if(isIOSBrowser){
+      // iOS browsers block popups in async context — use redirect instead
       // Store intended destination to restore after redirect
       sessionStorage.setItem('cvnova_redirect_auth','1');
       await signInWithRedirect(auth,GoogleAuthProvider);
