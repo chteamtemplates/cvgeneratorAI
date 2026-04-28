@@ -62,6 +62,7 @@
 }
 </script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%231d4ed8'/><stop offset='1' stop-color='%233b82f6'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><text y='23' x='5' font-size='18' font-family='Georgia,serif' fill='white' font-weight='bold'>CV</text></svg>"/>
+<link rel="manifest" href="manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Serif+Display&family=Playfair+Display:wght@400;600;700&family=Cairo:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -77,7 +78,8 @@
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
            signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, onAuthStateChanged
          } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp,
+           collection, addDoc, getDocs, query, orderBy, limit
          } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const FIREBASE_CONFIG = {
@@ -98,7 +100,8 @@
   // ─── Expose to global scope for non-module scripts ───
   window._fb = { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword,
                  signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider: googleProvider, signOut,
-                 onAuthStateChanged, doc, getDoc, setDoc, updateDoc, serverTimestamp };
+                 onAuthStateChanged, doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp,
+                 collection, addDoc, getDocs, query, orderBy, limit };
 </script>
 
 <!-- PayPal SDK -->
@@ -742,6 +745,20 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
 .tpl-lock-btn{padding:7px 16px;background:#fff;color:var(--accent);border-radius:8px;font-size:.78rem;font-weight:700;border:none;cursor:pointer;transition:all .2s}
 .tpl-lock-btn:hover{background:var(--accent);color:#fff}
 
+/* ═══════════ CLOUD MODAL ═══════════ */
+.cloud-overlay{position:fixed;inset:0;z-index:1100;background:rgba(10,18,40,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.cloud-overlay.open{display:flex}
+.cloud-box{background:var(--page-bg);border-radius:16px;padding:24px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:var(--sh4)}
+.cloud-cv-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--panel-bd);border-radius:10px;margin-bottom:8px;transition:all .2s}
+.cloud-cv-item:hover{border-color:var(--accent);background:var(--b0)}
+.cloud-cv-info{display:flex;flex-direction:column;gap:2px}
+.cloud-cv-info strong{font-size:.9rem;color:var(--page-fg)}
+.cloud-cv-info span{font-size:.75rem;color:var(--muted)}
+.cloud-cv-actions{display:flex;gap:6px}
+.cloud-btn{padding:6px 12px;border-radius:8px;font-size:.78rem;font-weight:600;border:none;cursor:pointer;transition:all .2s}
+.cloud-btn.load{background:var(--accent);color:#fff}.cloud-btn.load:hover{background:var(--accent-2)}
+.cloud-btn.del{background:var(--panel-bg);border:1px solid var(--panel-bd);color:var(--red)}.cloud-btn.del:hover{background:var(--red);color:#fff}
+
 /* ═══════════ MOBILE RESPONSIVE FIXES ═══════════ */
 /* Mob tabs builder */
 .mob-tabs{display:none;gap:0;background:var(--panel-bg);border:1.5px solid var(--panel-bd);border-radius:12px;overflow:hidden;margin:10px 14px 0}
@@ -1119,7 +1136,10 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
       <button class="btool" onclick="saveJSON()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span id="bt-save">Save</span></button>
       <button class="btool" onclick="document.getElementById('load-input').click()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span id="bt-load">Load</span></button>
       <input type="file" id="load-input" accept="application/json" style="display:none" onchange="loadJSON(event)"/>
-      <button class="btool primary" onclick="exportPDF()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span id="bt-pdf">Download PDF</span></button>
+      <button class="btool" onclick="saveToCloud()" title="Sauvegarder en ligne"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg><span id="bt-cloud">Cloud</span></button>
+      <button class="btool" onclick="loadCloudCVs()" title="Mes CVs sauvegardés"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span id="bt-mycvs">My CVs</span></button>
+      <button class="btool primary" onclick="exportPDF()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span id="bt-pdf">PDF</span></button>
+      <button class="btool" onclick="exportWord()" title="Export Word"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span id="bt-word">Word</span></button>
     </div>
   </div>
   <div class="mob-tabs" id="mob-tabs">
@@ -1245,7 +1265,7 @@ const I18N = {
     faq:{tag:'FAQ',title:'Frequently asked questions',sub:'Everything you need to know about CVNova.',items:[['Is CVNova really free?','Yes. All 10+ templates, AI assistant, and PDF export are 100% free forever. No trial, no credit card.'],['How does the AI assistant work?','Our AI generates summaries, improves bullet points, suggests skills, writes cover letters, and translates content. Just click any "✨ AI" button.'],['Are the CVs ATS-friendly?','Yes. All templates use clean structure, standard fonts, and proper semantic HTML so they pass applicant tracking systems.'],['Does it support Arabic with RTL?','Yes. Full RTL layout with proper Arabic fonts (Cairo, Amiri). You can mix languages in the same CV.'],['Is my data private?','100% private. Everything runs in your browser. Your CV never leaves your device unless you choose to save it as a JSON file.'],['Can I edit my CV after exporting?','Yes. Use "Save" to download your CV as JSON, then "Load" to restore it anytime.']]},
     cta:{tag:'Start now',title:'Ready to create your CV?',sub:'Join thousands of job seekers who built their CV with CVNova — for free.',btn:'Generate my CV with AI',p:['Free forever','No account','Instant PDF']},
     foot:{text:'AI-powered CV builder for Arabic, French and English speakers. Free forever.',c1:'Product',c2:'Resources',c3:'Legal',c1l:['Templates','AI Assistant','How it works','Pricing'],c2l:['FAQ','Blog','CV guides','Interview tips'],c3l:['Privacy policy','Terms','Cookies','Contact'],bot1:'© 2026 CVNova. All rights reserved.',bot2:'Made with passion for job seekers.'},
-    b:{back:'Back',tpl:'Template:',ai:'AI Assistant',save:'Save',load:'Load',pdf:'Download PDF',title:'Build your CV',sub:'Fill the fields below — preview updates live.',live:'Live preview',photo:'Photo',photoUp:'Upload',photoRm:'Remove',photoHint:'No photo',info:'Personal information',fn:'First name',ln:'Last name',jt:'Job title',em:'Email',ph:'Phone',loc:'City / Country',web:'Website / LinkedIn',sum:'Professional summary',sumPh:'Describe your experience in 2-3 sentences...',exp:'Experience',edu:'Education',sk:'Skills',skPh:'e.g. JavaScript',skAdd:'Add',lng:'Languages',prj:'Projects',cert:'Certifications',int:'Interests',intPh:'e.g. Photography',addExp:'+ Add experience',addEdu:'+ Add education',addLng:'+ Add language',addPrj:'+ Add project',addCert:'+ Add certification',role:'Job title',company:'Company',place:'Location',start:'Start date',end:'End date',desc:'Description / achievements',degree:'Degree',school:'School / University',field:'Field of study',lName:'Language',lLvl:'Level',lLvls:['Beginner','Intermediate','Advanced','Fluent','Native'],pName:'Project name',pTech:'Technologies',pDesc:'Description',pLink:'Link (optional)',cName:'Certification',cIssuer:'Issuer',cDate:'Date'},
+    b:{back:'Back',tpl:'Template:',ai:'AI Assistant',save:'Save',load:'Load',pdf:'PDF',word:'Word',cloud:'Cloud',mycvs:'My CVs',title:'Build your CV',sub:'Fill the fields below — preview updates live.',live:'Live preview',photo:'Photo',photoUp:'Upload',photoRm:'Remove',photoHint:'No photo',info:'Personal information',fn:'First name',ln:'Last name',jt:'Job title',em:'Email',ph:'Phone',loc:'City / Country',web:'Website / LinkedIn',sum:'Professional summary',sumPh:'Describe your experience in 2-3 sentences...',exp:'Experience',edu:'Education',sk:'Skills',skPh:'e.g. JavaScript',skAdd:'Add',lng:'Languages',prj:'Projects',cert:'Certifications',int:'Interests',intPh:'e.g. Photography',addExp:'+ Add experience',addEdu:'+ Add education',addLng:'+ Add language',addPrj:'+ Add project',addCert:'+ Add certification',role:'Job title',company:'Company',place:'Location',start:'Start date',end:'End date',desc:'Description / achievements',degree:'Degree',school:'School / University',field:'Field of study',lName:'Language',lLvl:'Level',lLvls:['Beginner','Intermediate','Advanced','Fluent','Native'],pName:'Project name',pTech:'Technologies',pDesc:'Description',pLink:'Link (optional)',cName:'Certification',cIssuer:'Issuer',cDate:'Date'},
     ai2:{title:'AI Assistant',tabs:{summary:'Summary',bullets:'Bullets',skills:'Skills',cover:'Cover letter',translate:'Translate'},sum:{label:'Describe yourself and your target role',ph:'e.g. Senior full stack developer with 5 years of experience in React and Node.js, looking for a lead role...',lbl2:'Tone',tones:['Professional','Friendly','Confident','Creative'],btn:'Generate summary',apply:'Apply to CV',copy:'Copy',regen:'Regenerate'},bul:{label:'Your current bullet or duty',ph:'e.g. Responsible for the website',lbl2:'Job title context',ph2:'e.g. Frontend Developer',btn:'Improve bullet'},sk:{label:'Your target role',ph:'e.g. Data Scientist',btn:'Suggest skills'},cov:{label:'Job title you are applying for',ph:'e.g. Senior Product Manager',lbl2:'Company / Context',ph2:'e.g. Stripe — a fintech startup',btn:'Write cover letter'},tr:{label:'Text to translate',ph:'Paste any text from your CV...',lbl2:'Target language',btn:'Translate',langs:{en:'English',fr:'French',ar:'Arabic'}},empty:'AI output will appear here…',loading:'AI is thinking…',errNoInput:'Please fill the input first.',err:'Something went wrong. Please try again.'}
   }
 };
@@ -1262,7 +1282,7 @@ I18N.fr = {
   faq:{tag:'FAQ',title:'Questions fréquentes',sub:'Tout ce qu\'il faut savoir sur CVNova.',items:[['CVNova est-il vraiment gratuit ?','Oui. Tous les 10+ modèles, l\'assistant IA et l\'export PDF sont gratuits à 100% pour toujours. Sans essai, sans carte.'],['Comment fonctionne l\'assistant IA ?','Notre IA génère des résumés, améliore les puces, suggère des compétences, rédige des lettres et traduit. Cliquez sur "✨ AI".'],['Les CV sont-ils compatibles ATS ?','Oui. Tous les modèles utilisent une structure propre, des polices standards et un HTML sémantique correct.'],['L\'arabe RTL est-il supporté ?','Oui. Mise en page RTL complète avec polices arabes (Cairo, Amiri). Vous pouvez mélanger les langues.'],['Mes données sont-elles privées ?','100% privé. Tout tourne dans votre navigateur. Votre CV ne quitte jamais votre appareil.'],['Puis-je modifier mon CV après export ?','Oui. Utilisez "Sauvegarder" pour télécharger votre CV en JSON, puis "Charger" pour le restaurer.']]},
   cta:{tag:'Commencez maintenant',title:'Prêt à créer votre CV ?',sub:'Rejoignez des milliers de chercheurs d\'emploi qui ont créé leur CV avec CVNova — gratuitement.',btn:'Générer mon CV avec l\'IA',p:['Gratuit pour toujours','Sans compte','PDF instantané']},
   foot:{text:'Générateur de CV avec IA pour arabophones, francophones et anglophones. Gratuit pour toujours.',c1:'Produit',c2:'Ressources',c3:'Légal',c1l:['Modèles','Assistant IA','Comment ça marche','Tarifs'],c2l:['FAQ','Blog','Guides CV','Conseils entretien'],c3l:['Confidentialité','Conditions','Cookies','Contact'],bot1:'© 2026 CVNova. Tous droits réservés.',bot2:'Fait avec passion pour les chercheurs d\'emploi.'},
-  b:{back:'Retour',tpl:'Modèle :',ai:'Assistant IA',save:'Sauver',load:'Charger',pdf:'Télécharger PDF',title:'Créez votre CV',sub:'Remplissez les champs — l\'aperçu se met à jour en direct.',live:'Aperçu en direct',photo:'Photo',photoUp:'Téléverser',photoRm:'Retirer',photoHint:'Aucune photo',info:'Informations personnelles',fn:'Prénom',ln:'Nom',jt:'Titre du poste',em:'Email',ph:'Téléphone',loc:'Ville / Pays',web:'Site Web / LinkedIn',sum:'Résumé professionnel',sumPh:'Décrivez votre expérience en 2-3 phrases...',exp:'Expérience',edu:'Formation',sk:'Compétences',skPh:'ex. JavaScript',skAdd:'Ajouter',lng:'Langues',prj:'Projets',cert:'Certifications',int:'Centres d\'intérêt',intPh:'ex. Photographie',addExp:'+ Ajouter une expérience',addEdu:'+ Ajouter une formation',addLng:'+ Ajouter une langue',addPrj:'+ Ajouter un projet',addCert:'+ Ajouter une certification',role:'Poste',company:'Entreprise',place:'Lieu',start:'Date début',end:'Date fin',desc:'Description / réalisations',degree:'Diplôme',school:'École / Université',field:'Domaine d\'étude',lName:'Langue',lLvl:'Niveau',lLvls:['Débutant','Intermédiaire','Avancé','Courant','Natif'],pName:'Nom du projet',pTech:'Technologies',pDesc:'Description',pLink:'Lien (optionnel)',cName:'Certification',cIssuer:'Émetteur',cDate:'Date'},
+  b:{back:'Retour',tpl:'Modèle :',ai:'Assistant IA',save:'Sauver',load:'Charger',pdf:'PDF',word:'Word',cloud:'Cloud',mycvs:'Mes CVs',title:'Créez votre CV',sub:'Remplissez les champs — l\'aperçu se met à jour en direct.',live:'Aperçu en direct',photo:'Photo',photoUp:'Téléverser',photoRm:'Retirer',photoHint:'Aucune photo',info:'Informations personnelles',fn:'Prénom',ln:'Nom',jt:'Titre du poste',em:'Email',ph:'Téléphone',loc:'Ville / Pays',web:'Site Web / LinkedIn',sum:'Résumé professionnel',sumPh:'Décrivez votre expérience en 2-3 phrases...',exp:'Expérience',edu:'Formation',sk:'Compétences',skPh:'ex. JavaScript',skAdd:'Ajouter',lng:'Langues',prj:'Projets',cert:'Certifications',int:'Centres d\'intérêt',intPh:'ex. Photographie',addExp:'+ Ajouter une expérience',addEdu:'+ Ajouter une formation',addLng:'+ Ajouter une langue',addPrj:'+ Ajouter un projet',addCert:'+ Ajouter une certification',role:'Poste',company:'Entreprise',place:'Lieu',start:'Date début',end:'Date fin',desc:'Description / réalisations',degree:'Diplôme',school:'École / Université',field:'Domaine d\'étude',lName:'Langue',lLvl:'Niveau',lLvls:['Débutant','Intermédiaire','Avancé','Courant','Natif'],pName:'Nom du projet',pTech:'Technologies',pDesc:'Description',pLink:'Lien (optionnel)',cName:'Certification',cIssuer:'Émetteur',cDate:'Date'},
   ai2:{title:'Assistant IA',tabs:{summary:'Résumé',bullets:'Puces',skills:'Compétences',cover:'Lettre',translate:'Traduire'},sum:{label:'Décrivez-vous et le poste visé',ph:'ex. Développeur full stack senior avec 5 ans d\'expérience en React et Node.js...',lbl2:'Ton',tones:['Professionnel','Amical','Confiant','Créatif'],btn:'Générer le résumé',apply:'Appliquer au CV',copy:'Copier',regen:'Régénérer'},bul:{label:'Votre puce ou tâche actuelle',ph:'ex. Responsable du site web',lbl2:'Contexte du poste',ph2:'ex. Développeur Frontend',btn:'Améliorer la puce'},sk:{label:'Poste visé',ph:'ex. Data Scientist',btn:'Suggérer des compétences'},cov:{label:'Poste pour lequel vous postulez',ph:'ex. Senior Product Manager',lbl2:'Entreprise / Contexte',ph2:'ex. Stripe — startup fintech',btn:'Rédiger la lettre'},tr:{label:'Texte à traduire',ph:'Collez tout texte de votre CV...',lbl2:'Langue cible',btn:'Traduire',langs:{en:'Anglais',fr:'Français',ar:'Arabe'}},empty:'La sortie IA apparaîtra ici…',loading:'L\'IA réfléchit…',errNoInput:'Veuillez remplir le champ.',err:'Une erreur est survenue. Réessayez.'}
 };
 I18N.ar = {
@@ -1278,7 +1298,7 @@ I18N.ar = {
   faq:{tag:'الأسئلة',title:'الأسئلة الشائعة',sub:'كل ما تحتاج معرفته عن CVNova.',items:[['هل CVNova مجاني حقاً؟','نعم. جميع القوالب (+10) ومساعد الذكاء الاصطناعي وتصدير PDF مجانية 100% للأبد. بدون تجربة، بدون بطاقة.'],['كيف يعمل مساعد الذكاء الاصطناعي؟','ذكاؤنا يولّد ملخصات، يحسّن النقاط، يقترح مهارات، يكتب رسائل تغطية ويترجم. اضغط "✨ AI".'],['هل السير الذاتية متوافقة ATS؟','نعم. جميع القوالب تستخدم بنية نظيفة وخطوطاً قياسية و HTML دلالي صحيح.'],['هل يدعم العربية RTL؟','نعم. دعم RTL كامل مع خطوط عربية (Cairo، Amiri). يمكنك خلط اللغات.'],['هل بياناتي خاصة؟','خاصة 100%. كل شيء يعمل في متصفحك. سيرتك لا تغادر جهازك أبداً.'],['هل يمكنني تعديل سيرتي بعد التصدير؟','نعم. استخدم "حفظ" لتحميل سيرتك كـJSON، ثم "تحميل" لاستعادتها.']]},
   cta:{tag:'ابدأ الآن',title:'جاهز لإنشاء سيرتك؟',sub:'انضم إلى آلاف الباحثين عن عمل الذين أنشأوا سيرتهم مع CVNova — مجاناً.',btn:'أنشئ سيرتي بالذكاء',p:['مجاني للأبد','بدون حساب','PDF فوري']},
   foot:{text:'منشئ سيرة ذاتية بالذكاء الاصطناعي للعرب والفرنسيين والإنجليز. مجاني للأبد.',c1:'المنتج',c2:'الموارد',c3:'قانوني',c1l:['القوالب','مساعد الذكاء','طريقة العمل','الأسعار'],c2l:['الأسئلة','المدونة','دلائل السيرة','نصائح المقابلة'],c3l:['الخصوصية','الشروط','ملفات تعريف الارتباط','اتصل بنا'],bot1:'© 2026 CVNova. جميع الحقوق محفوظة.',bot2:'صُنع بشغف للباحثين عن عمل.'},
-  b:{back:'رجوع',tpl:'القالب:',ai:'مساعد الذكاء',save:'حفظ',load:'تحميل',pdf:'تنزيل PDF',title:'أنشئ سيرتك',sub:'املأ الحقول — المعاينة تتحدث فورياً.',live:'معاينة مباشرة',photo:'الصورة',photoUp:'تحميل',photoRm:'إزالة',photoHint:'لا توجد صورة',info:'المعلومات الشخصية',fn:'الاسم الأول',ln:'اللقب',jt:'المسمى الوظيفي',em:'البريد الإلكتروني',ph:'الهاتف',loc:'المدينة / البلد',web:'الموقع / LinkedIn',sum:'الملخص المهني',sumPh:'صف خبرتك في 2-3 جمل...',exp:'الخبرة',edu:'التعليم',sk:'المهارات',skPh:'مثل JavaScript',skAdd:'إضافة',lng:'اللغات',prj:'المشاريع',cert:'الشهادات',int:'الاهتمامات',intPh:'مثل التصوير',addExp:'+ إضافة خبرة',addEdu:'+ إضافة تعليم',addLng:'+ إضافة لغة',addPrj:'+ إضافة مشروع',addCert:'+ إضافة شهادة',role:'المسمى',company:'الشركة',place:'المكان',start:'تاريخ البدء',end:'تاريخ الانتهاء',desc:'الوصف / الإنجازات',degree:'الشهادة',school:'المدرسة / الجامعة',field:'التخصص',lName:'اللغة',lLvl:'المستوى',lLvls:['مبتدئ','متوسط','متقدم','بطلاقة','لغة أم'],pName:'اسم المشروع',pTech:'التقنيات',pDesc:'الوصف',pLink:'الرابط (اختياري)',cName:'الشهادة',cIssuer:'المُصدر',cDate:'التاريخ'},
+  b:{back:'رجوع',tpl:'القالب:',ai:'مساعد الذكاء',save:'حفظ',load:'تحميل',pdf:'PDF',word:'Word',cloud:'سحابة',mycvs:'ملفاتي',title:'أنشئ سيرتك',sub:'املأ الحقول — المعاينة تتحدث فورياً.',live:'معاينة مباشرة',photo:'الصورة',photoUp:'تحميل',photoRm:'إزالة',photoHint:'لا توجد صورة',info:'المعلومات الشخصية',fn:'الاسم الأول',ln:'اللقب',jt:'المسمى الوظيفي',em:'البريد الإلكتروني',ph:'الهاتف',loc:'المدينة / البلد',web:'الموقع / LinkedIn',sum:'الملخص المهني',sumPh:'صف خبرتك في 2-3 جمل...',exp:'الخبرة',edu:'التعليم',sk:'المهارات',skPh:'مثل JavaScript',skAdd:'إضافة',lng:'اللغات',prj:'المشاريع',cert:'الشهادات',int:'الاهتمامات',intPh:'مثل التصوير',addExp:'+ إضافة خبرة',addEdu:'+ إضافة تعليم',addLng:'+ إضافة لغة',addPrj:'+ إضافة مشروع',addCert:'+ إضافة شهادة',role:'المسمى',company:'الشركة',place:'المكان',start:'تاريخ البدء',end:'تاريخ الانتهاء',desc:'الوصف / الإنجازات',degree:'الشهادة',school:'المدرسة / الجامعة',field:'التخصص',lName:'اللغة',lLvl:'المستوى',lLvls:['مبتدئ','متوسط','متقدم','بطلاقة','لغة أم'],pName:'اسم المشروع',pTech:'التقنيات',pDesc:'الوصف',pLink:'الرابط (اختياري)',cName:'الشهادة',cIssuer:'المُصدر',cDate:'التاريخ'},
   ai2:{title:'مساعد الذكاء',tabs:{summary:'الملخص',bullets:'النقاط',skills:'المهارات',cover:'رسالة تغطية',translate:'ترجمة'},sum:{label:'صف نفسك والوظيفة المستهدفة',ph:'مثل: مطور full stack أول مع 5 سنوات خبرة في React و Node.js...',lbl2:'النبرة',tones:['احترافية','ودية','واثقة','إبداعية'],btn:'ولّد الملخص',apply:'طبّق على السيرة',copy:'نسخ',regen:'إعادة التوليد'},bul:{label:'نقطتك أو مهمتك الحالية',ph:'مثل: مسؤول عن الموقع',lbl2:'سياق الوظيفة',ph2:'مثل: مطور Frontend',btn:'حسّن النقطة'},sk:{label:'الوظيفة المستهدفة',ph:'مثل: عالم بيانات',btn:'اقترح مهارات'},cov:{label:'الوظيفة المطلوبة',ph:'مثل: مدير منتج أول',lbl2:'الشركة / السياق',ph2:'مثل: Stripe — شركة fintech ناشئة',btn:'اكتب الرسالة'},tr:{label:'النص للترجمة',ph:'الصق أي نص من سيرتك...',lbl2:'اللغة الهدف',btn:'ترجم',langs:{en:'إنجليزي',fr:'فرنسي',ar:'عربي'}},empty:'ستظهر النتيجة هنا…',loading:'الذكاء يفكر…',errNoInput:'املأ الحقل أولاً.',err:'حدث خطأ. حاول مجدداً.'}
 };
 // ======================= STATE =======================
@@ -1317,7 +1337,7 @@ const SAMPLE = {
 };
 function emptyData(){return{first:'',last:'',title:'',email:'',phone:'',loc:'',web:'',photo:'',sum:'',exp:[],edu:[],sk:[],lng:[],prj:[],cert:[],int:[]}}
 
-const state = {lang:(()=>{try{const l=localStorage.getItem('cvnova-lang');if(l&&['en','fr','ar'].includes(l))return l;}catch(e){}return 'fr';})(),theme:'light',page:'land',tpl:'classic',color:COLORS[0],zoom:1,data:JSON.parse(JSON.stringify(SAMPLE)),aiTab:'summary',aiBusy:false,aiLast:''};
+const state = {lang:(()=>{try{const l=localStorage.getItem('cvnova-lang');if(l&&['en','fr','ar'].includes(l))return l;}catch(e){}return 'fr';})(),theme:'light',page:'land',tpl:'classic',color:COLORS[0],zoom:1,data:JSON.parse(JSON.stringify(SAMPLE)),aiTab:'summary',aiBusy:false,aiLast:'',cloudCvId:null};
 
 // ======================= HELPERS =======================
 const $=id=>document.getElementById(id);
@@ -1368,7 +1388,7 @@ function applyI18n(){
   $('fbot1').textContent=t.foot.bot1;$('fbot2').textContent=t.foot.bot2;
   // Builder labels
   const b=t.b;
-  $('bt-back').textContent=b.back;$('bt-tpl-lbl').textContent=b.tpl;$('bt-ai').textContent=b.ai;$('bt-save').textContent=b.save;$('bt-load').textContent=b.load;$('bt-pdf').textContent=b.pdf;
+  $('bt-back').textContent=b.back;$('bt-tpl-lbl').textContent=b.tpl;$('bt-ai').textContent=b.ai;$('bt-save').textContent=b.save;$('bt-load').textContent=b.load;$('bt-pdf').textContent=b.pdf;$('bt-word').textContent=b.word;$('bt-cloud').textContent=b.cloud;$('bt-mycvs').textContent=b.mycvs;
   $('fp-title').textContent=b.title;$('fp-sub').textContent=b.sub;$('pp-live').textContent=b.live;
   $('lbl-photo').textContent=b.photo;$('lbl-photo-up').querySelector('span').textContent=b.photoUp;$('lbl-photo-rm').textContent=b.photoRm;$('photo-hint').textContent=b.photoHint;
   $('lbl-info').textContent=b.info;$('lbl-fn').textContent=b.fn;$('lbl-ln').textContent=b.ln;$('lbl-title').textContent=b.jt;$('lbl-email').textContent=b.em;$('lbl-phone').textContent=b.ph;$('lbl-loc').textContent=b.loc;$('lbl-web').textContent=b.web;
@@ -1548,21 +1568,122 @@ function removePhoto(){state.data.photo='';$('photo-input').value='';renderBuild
 // Zoom
 function zoomPrev(d){state.zoom=d===0?1:Math.max(.5,Math.min(1.5,state.zoom+d));$('zoom-val').textContent=Math.round(state.zoom*100)+'%';const cvo=$('cvo');if(cvo)cvo.style.transform=`scale(${state.zoom})`}
 
-// Save/Load
+// Save/Load (local JSON)
 function saveJSON(){const blob=new Blob([JSON.stringify(state.data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='cvnova-data.json';a.click();URL.revokeObjectURL(url);toast('Saved','success')}
 function loadJSON(e){const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);Object.keys(emptyData()).forEach(k=>{if(d[k]!==undefined)state.data[k]=d[k]});renderBuilder();renderPreview();toast('Loaded','success')}catch(err){toast('Invalid file','error')}};r.readAsText(f)}
+
+// ======================= CLOUD SAVE (Firestore) =======================
+async function saveToCloud(){
+  if(!authState.user){openAuth('login');toast('Connectez-vous pour sauvegarder en ligne','info');return;}
+  sync();
+  const name=((state.data.first||'')+' '+(state.data.last||'')).trim()||'Mon CV';
+  try{
+    const{db,collection,addDoc,doc,setDoc,serverTimestamp}=window._fb;
+    const cvData={name:name,data:JSON.parse(JSON.stringify(state.data)),template:state.tpl,color:state.color,lang:state.lang,updatedAt:serverTimestamp()};
+    if(state.cloudCvId){
+      await setDoc(doc(db,'users',authState.user.uid,'cvs',state.cloudCvId),cvData,{merge:true});
+      toast('CV mis à jour dans le cloud ☁️','success');
+    }else{
+      cvData.createdAt=serverTimestamp();
+      const ref=await addDoc(collection(db,'users',authState.user.uid,'cvs'),cvData);
+      state.cloudCvId=ref.id;
+      toast('CV sauvegardé dans le cloud ☁️','success');
+    }
+  }catch(e){console.error(e);toast('Erreur sauvegarde cloud','error');}
+}
+async function loadCloudCVs(){
+  if(!authState.user){openAuth('login');toast('Connectez-vous pour voir vos CVs','info');return;}
+  const list=$('cloud-cv-list');if(!list)return;
+  list.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px">Chargement...</p>';
+  $('cloud-overlay').classList.add('open');
+  try{
+    const{db,collection,getDocs,query,orderBy}=window._fb;
+    const q=query(collection(db,'users',authState.user.uid,'cvs'),orderBy('updatedAt','desc'));
+    const snap=await getDocs(q);
+    if(snap.empty){list.innerHTML='<p style="text-align:center;color:var(--muted);padding:30px">Aucun CV sauvegardé.<br>Utilisez "☁️ Cloud" pour sauvegarder.</p>';return;}
+    list.innerHTML='';
+    snap.forEach(d=>{
+      const cv=d.data();const id=d.id;
+      const date=cv.updatedAt?new Date(cv.updatedAt.seconds*1000).toLocaleDateString():'—';
+      const el=document.createElement('div');el.className='cloud-cv-item';
+      el.innerHTML=`<div class="cloud-cv-info"><strong>${esc(cv.name||'Sans nom')}</strong><span>${date} · ${esc(cv.template||'classic')}</span></div><div class="cloud-cv-actions"><button class="cloud-btn load" onclick="loadFromCloud('${id}')">Charger</button><button class="cloud-btn del" onclick="deleteFromCloud('${id}',this.closest('.cloud-cv-item'))">🗑️</button></div>`;
+      list.appendChild(el);
+    });
+  }catch(e){console.error(e);list.innerHTML='<p style="text-align:center;color:var(--red);padding:20px">Erreur de chargement</p>';}
+}
+async function loadFromCloud(cvId){
+  try{
+    const{db,doc,getDoc}=window._fb;
+    const snap=await getDoc(doc(db,'users',authState.user.uid,'cvs',cvId));
+    if(!snap.exists()){toast('CV non trouvé','error');return;}
+    const cv=snap.data();
+    Object.keys(emptyData()).forEach(k=>{if(cv.data&&cv.data[k]!==undefined)state.data[k]=cv.data[k]});
+    if(cv.template)state.tpl=cv.template;
+    if(cv.color)state.color=cv.color;
+    if(cv.lang)setLang(cv.lang);
+    state.cloudCvId=cvId;
+    renderBuilder();renderPreview();closeCloudModal();
+    toast('CV chargé depuis le cloud ☁️','success');
+  }catch(e){console.error(e);toast('Erreur de chargement','error');}
+}
+async function deleteFromCloud(cvId,el){
+  if(!confirm('Supprimer ce CV du cloud ?'))return;
+  try{
+    const{db,doc,deleteDoc}=window._fb;
+    await deleteDoc(doc(db,'users',authState.user.uid,'cvs',cvId));
+    if(el)el.remove();
+    if(state.cloudCvId===cvId)state.cloudCvId=null;
+    toast('CV supprimé','info');
+  }catch(e){console.error(e);toast('Erreur suppression','error');}
+}
+function closeCloudModal(){$('cloud-overlay').classList.remove('open');}
+
+// ======================= WORD EXPORT =======================
+function exportWord(){
+  const el=$('cvo');if(!el)return;
+  const prev=state.zoom;state.zoom=1;el.style.transform='scale(1)';
+  const fullName=((state.data.first||'')+' '+(state.data.last||'')).trim()||'cv';
+  const styles=Array.from(document.querySelectorAll('style')).map(s=>s.outerHTML).join('');
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8">${styles}<style>body{margin:0;padding:20px;font-family:Arial,sans-serif}@page{size:A4;margin:0}</style></head><body>${el.outerHTML}</body></html>`;
+  const blob=new Blob([html],{type:'application/msword'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=fullName.replace(/\s+/g,'_')+'.doc';a.click();
+  URL.revokeObjectURL(url);
+  state.zoom=prev;zoomPrev(0);el.style.transform=`scale(${prev})`;
+  toast('Word exported','success');
+}
+
+// ======================= AUTO-SAVE (localStorage) =======================
+let autoSaveTimer=null;
+function triggerAutoSave(){
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer=setTimeout(()=>{
+    try{sync();localStorage.setItem('cvnova-autosave',JSON.stringify({data:state.data,tpl:state.tpl,color:state.color,ts:Date.now()}))}catch(e){}
+  },2000);
+}
+function loadAutoSave(){
+  try{
+    const s=localStorage.getItem('cvnova-autosave');
+    if(!s)return false;
+    const saved=JSON.parse(s);
+    if(!saved.data)return false;
+    Object.keys(emptyData()).forEach(k=>{if(saved.data[k]!==undefined)state.data[k]=saved.data[k]});
+    if(saved.tpl)state.tpl=saved.tpl;
+    if(saved.color)state.color=saved.color;
+    return true;
+  }catch(e){return false;}
+}
 
 // PDF export
 async function exportPDF(){
   const el=$('cvo');if(!el)return;const prev=state.zoom;state.zoom=1;el.style.transform='scale(1)';
   const fullName=((state.data.first||'')+' '+(state.data.last||'')).trim()||'cv';
   const opt={margin:0,filename:fullName.replace(/\s+/g,'_')+'.pdf',image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,letterRendering:true,backgroundColor:'#ffffff'},jsPDF:{unit:'pt',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}};
-  try{toast('Generating PDF…','info');await html2pdf().set(opt).from(el).save();toast('PDF downloaded','success');}catch(e){toast('PDF failed','error');console.error(e)}
-  try{await incrementCVCounter();}catch(ce){console.warn('Counter update failed:',ce)}
+  try{toast('Generating PDF…','info');await html2pdf().set(opt).from(el).save();toast('PDF downloaded','success');try{await incrementCVCounter();}catch(ce){console.warn('Counter update failed:',ce)}}catch(e){toast('PDF failed','error');console.error(e)}
   state.zoom=prev;zoomPrev(0);el.style.transform=`scale(${prev})`;
 }
 // ======================= PREVIEW / CV RENDER =======================
-function renderPreview(){const el=$('cvo');if(!el)return;el.innerHTML=renderCV(state.tpl,state.color,state.data,state.lang)}
+function renderPreview(){const el=$('cvo');if(!el)return;el.innerHTML=renderCV(state.tpl,state.color,state.data,state.lang);if(state.page==='build')triggerAutoSave();}
 
 function renderCV(tplId,color,d,lang){
   const isAr=lang==='ar';
@@ -1794,6 +1915,7 @@ function init(){
   try{const t=localStorage.getItem('cvnova-theme');if(t==='dark'){state.theme='dark';document.documentElement.setAttribute('data-theme','dark');$('ic-sun').style.display='none';$('ic-moon').style.display='block';var ms=$('mm-ic-sun'),mm=$('mm-ic-moon');if(ms)ms.style.display='none';if(mm)mm.style.display='block'}}catch(e){}
   try{const l=localStorage.getItem('cvnova-lang');if(l&&I18N[l])state.lang=l}catch(e){}
   setLang(state.lang);
+  if(loadAutoSave()){renderBuilder();renderPreview();}
   initReveal();
   window.addEventListener('scroll',onScroll,{passive:true});
   // close modal on backdrop click
@@ -2120,6 +2242,17 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
   </div>
 </div>
 
+<!-- ══════════════════ CLOUD CVs MODAL ══════════════════ -->
+<div class="cloud-overlay" id="cloud-overlay">
+  <div class="cloud-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 style="margin:0;font-size:1.1rem">Mes CVs sauvegardés</h3>
+      <button onclick="closeCloudModal()" style="background:var(--panel-bd);border:none;font-size:1.2rem;color:var(--page-fg);cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
+    </div>
+    <div id="cloud-cv-list"></div>
+  </div>
+</div>
+
 <!-- ===== CV Counter (Firebase) ===== -->
 <script type="module">
   import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -2175,6 +2308,24 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
 
   // Load counter on page load
   loadCounter();
+</script>
+
+<!-- ═══ PWA Service Worker Registration ═══ -->
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+</script>
+
+<!-- ═══ PWA Install Prompt ═══ -->
+<script>
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;
+  const btn=document.createElement('button');btn.id='pwa-install-btn';
+  btn.innerHTML='📱 Installer l\'app';
+  btn.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;padding:12px 20px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:12px;font-size:.85rem;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(29,78,216,.3);font-family:inherit;transition:all .3s';
+  btn.onclick=()=>{deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;btn.remove()})};
+  document.body.appendChild(btn);
+  setTimeout(()=>{if(btn.parentNode)btn.remove()},15000);
+});
 </script>
 </body>
 </html>
