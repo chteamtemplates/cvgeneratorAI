@@ -1858,12 +1858,12 @@ function updateNavAuth(loggedIn){
   const mmLoginBtn=$('mm-login-btn');
   if(mmLoginBtn){
     const loginTxt={en:'Sign in',fr:'Se connecter',ar:'تسجيل الدخول'};
-    mmLoginBtn.textContent=loginTxt[l]||loginTxt.fr;
+    mmLoginBtn.textContent=loginTxt[state.lang]||loginTxt.fr;
   }
   const mmStart=$('mm-start');
   if(mmStart){
     const startTxt={en:'Start Building',fr:'Commencer',ar:'ابدأ الآن'};
-    mmStart.textContent=startTxt[l]||startTxt.fr;
+    mmStart.textContent=startTxt[state.lang]||startTxt.fr;
   }
   const lo=$('nav-loggedout'),li=$('nav-loggedin');if(!lo||!li)return;
   if(loggedIn&&authState.user){
