@@ -67,6 +67,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Serif+Display&family=Playfair+Display:wght@400;600;700&family=Cairo:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- Google Analytics — replace G-XXXXXXXXXX with your measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+<!-- EmailJS SDK for transactional emails — replace with your IDs at https://emailjs.com -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>try{emailjs.init({publicKey:'YOUR_EMAILJS_PUBLIC_KEY'})}catch(e){}</script>
 <!-- Firebase SDK -->
 <script type="module">
   // ╔══════════════════════════════════════════════════════╗
@@ -759,6 +765,33 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
 .cloud-btn.load{background:var(--accent);color:#fff}.cloud-btn.load:hover{background:var(--accent-2)}
 .cloud-btn.del{background:var(--panel-bg);border:1px solid var(--panel-bd);color:var(--red)}.cloud-btn.del:hover{background:var(--red);color:#fff}
 
+/* ═══════════ ADMIN DASHBOARD ═══════════ */
+.admin-overlay{position:fixed;inset:0;z-index:1200;background:rgba(10,18,40,.6);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding:30px 20px;overflow-y:auto}
+.admin-overlay.open{display:flex}
+.admin-box{background:var(--page-bg);border-radius:20px;padding:28px;max-width:720px;width:100%;box-shadow:var(--sh4)}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.admin-card{padding:18px;background:var(--panel-bg);border:1px solid var(--panel-bd);border-radius:14px;text-align:center}
+.admin-card.pro{background:linear-gradient(135deg,#dbeafe,#eff6ff);border-color:var(--accent)}
+.admin-card.rev{background:linear-gradient(135deg,#d1fae5,#ecfdf5);border-color:var(--grn)}
+.admin-num{font-size:1.6rem;font-weight:800;color:var(--page-fg)}
+.admin-label{font-size:.75rem;color:var(--muted);font-weight:600;margin-top:4px}
+.admin-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--panel-bd)}
+.admin-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.admin-table th{background:var(--panel-bg);padding:10px 12px;text-align:left;font-weight:700;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+.admin-table td{padding:10px 12px;border-top:1px solid var(--panel-bd)}
+.admin-plan-tag{padding:3px 10px;border-radius:999px;font-size:.7rem;font-weight:700;text-transform:uppercase}
+.admin-plan-tag.free{background:var(--g1);color:var(--g6)}
+.admin-plan-tag.pro{background:var(--b1);color:var(--accent)}
+
+/* ═══════════ BLOG CARDS ═══════════ */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.blog-card{background:var(--page-bg);border:1px solid var(--panel-bd);border-radius:16px;padding:24px;transition:all .3s}
+.blog-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--sh3)}
+.blog-icon{font-size:2rem;margin-bottom:12px}
+.blog-card h3{font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--page-fg)}
+.blog-card p{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.blog-meta{font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.04em}
+
 /* ═══════════ MOBILE RESPONSIVE FIXES ═══════════ */
 /* Mob tabs builder */
 .mob-tabs{display:none;gap:0;background:var(--panel-bg);border:1.5px solid var(--panel-bd);border-radius:12px;overflow:hidden;margin:10px 14px 0}
@@ -860,6 +893,10 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
             <div style="font-size:.75rem;color:var(--muted)" id="pmenu-email"></div>
             <div id="pmenu-plan" style="margin-top:4px;font-size:.72rem;font-weight:700;color:var(--accent)">Plan Gratuit</div>
           </div>
+          <button id="admin-btn" onclick="openAdmin();toggleProfileMenu()" style="width:100%;padding:9px 12px;text-align:left;background:none;border:none;border-radius:8px;font-size:.85rem;color:var(--accent);cursor:pointer;font-family:inherit;display:none;align-items:center;gap:8px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard Admin
+          </button>
           <button onclick="doSignOut();toggleProfileMenu()" style="width:100%;padding:9px 12px;text-align:left;background:none;border:none;border-radius:8px;font-size:.85rem;color:var(--red);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             Déconnexion
@@ -1092,6 +1129,32 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
     <div class="section-wrap">
       <div class="sec-head rv"><div class="chip" id="faqtag">FAQ</div><h2 id="faqtitle">Frequently asked questions</h2><p id="faqsub">Everything you need to know about CVNova.</p></div>
       <div class="faq-wrap" id="faq-list"></div>
+    </div>
+  </section>
+
+  <section id="blog-sec" style="background:var(--subtle)">
+    <div class="section-wrap">
+      <div class="sec-head rv"><div class="chip" id="blogtag">Blog</div><h2 id="blogtitle">CV Tips & Career Advice</h2><p id="blogsub">Expert guides to help you land your dream job.</p></div>
+      <div class="blog-grid" id="blog-grid">
+        <article class="blog-card rv">
+          <div class="blog-icon">📝</div>
+          <h3>10 Mistakes That Get Your CV Rejected</h3>
+          <p>Avoid these common pitfalls that HR managers spot instantly. From typos to poor formatting, learn what costs you interviews.</p>
+          <span class="blog-meta">5 min read</span>
+        </article>
+        <article class="blog-card rv">
+          <div class="blog-icon">🤖</div>
+          <h3>How AI Is Transforming CV Writing in 2026</h3>
+          <p>Discover how AI tools like CVNova help you write better summaries, optimize keywords for ATS, and create professional CVs in minutes.</p>
+          <span class="blog-meta">4 min read</span>
+        </article>
+        <article class="blog-card rv">
+          <div class="blog-icon">🎯</div>
+          <h3>ATS-Friendly CV: The Complete Guide</h3>
+          <p>Learn how Applicant Tracking Systems work and how to format your CV to pass automated screening every time.</p>
+          <span class="blog-meta">6 min read</span>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -1638,6 +1701,59 @@ async function deleteFromCloud(cvId,el){
 }
 function closeCloudModal(){$('cloud-overlay').classList.remove('open');}
 
+// ======================= ADMIN DASHBOARD =======================
+const ADMIN_EMAILS=['chahinediaf23@gmail.com'];
+function isAdmin(){return authState.user && ADMIN_EMAILS.includes(authState.user.email);}
+async function openAdmin(){
+  if(!isAdmin()){toast('Accès admin requis','error');return;}
+  $('admin-overlay').classList.add('open');
+  const stats=$('admin-stats');
+  stats.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px">Chargement des statistiques...</p>';
+  try{
+    const{db,collection,getDocs,query,doc,getDoc}=window._fb;
+    // Get all users
+    const usersSnap=await getDocs(collection(db,'users'));
+    let totalUsers=0,proUsers=0,userList=[];
+    usersSnap.forEach(d=>{
+      totalUsers++;const u=d.data();
+      if(u.plan==='pro')proUsers++;
+      userList.push({id:d.id,email:u.email||'—',name:u.name||'—',plan:u.plan||'free',created:u.createdAt?new Date(u.createdAt.seconds*1000).toLocaleDateString():'—'});
+    });
+    // Get CV counter
+    const counterSnap=await getDoc(doc(db,'stats','global'));
+    const cvCount=counterSnap.exists()?(counterSnap.data().cvs_created||0):0;
+    // Revenue estimate
+    const monthlyRevenue=proUsers*4.99;
+    stats.innerHTML=`
+      <div class="admin-grid">
+        <div class="admin-card"><div class="admin-num">${totalUsers}</div><div class="admin-label">Utilisateurs</div></div>
+        <div class="admin-card pro"><div class="admin-num">${proUsers}</div><div class="admin-label">Abonnés Pro</div></div>
+        <div class="admin-card"><div class="admin-num">${cvCount}</div><div class="admin-label">CVs créés</div></div>
+        <div class="admin-card rev"><div class="admin-num">$${monthlyRevenue.toFixed(2)}</div><div class="admin-label">Revenus / mois</div></div>
+      </div>
+      <h4 style="margin:20px 0 10px;font-size:.95rem">Liste des utilisateurs</h4>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Email</th><th>Nom</th><th>Plan</th><th>Inscription</th></tr></thead>
+          <tbody>${userList.map(u=>`<tr><td>${esc(u.email)}</td><td>${esc(u.name)}</td><td><span class="admin-plan-tag ${u.plan}">${u.plan}</span></td><td>${u.created}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+  }catch(e){console.error(e);stats.innerHTML='<p style="text-align:center;color:var(--red);padding:20px">Erreur de chargement: '+esc(e.message)+'</p>';}
+}
+function closeAdmin(){$('admin-overlay').classList.remove('open');}
+
+// ======================= EMAIL NOTIFICATIONS =======================
+function sendWelcomeEmail(email,name){
+  if(typeof emailjs==='undefined')return;
+  try{
+    emailjs.send('YOUR_SERVICE_ID','template_welcome',{
+      to_email:email,to_name:name||'User',
+      subject:'Welcome to CVNova!',
+      message:'Thank you for joining CVNova. Start building your professional CV today!'
+    }).catch(()=>{});
+  }catch(e){}
+}
+
 // ======================= WORD EXPORT =======================
 function exportWord(){
   const el=$('cvo');if(!el)return;
@@ -2002,6 +2118,7 @@ function updateNavAuth(loggedIn){
     const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     $('nav-avatar').textContent=initials;$('nav-user-name').textContent=name;
     const pb=$('nav-pro-badge');if(pb)pb.style.display=authState.isPro?'inline-flex':'none';
+    const ab=$('admin-btn');if(ab)ab.style.display=isAdmin()?'flex':'none';
   }else{lo.style.display='flex';li.style.display='none';li.classList.remove('active');}
   // Sync mobile menu
   const mmOut=$('mm-loggedout'),mmIn=$('mm-loggedin');
@@ -2053,6 +2170,7 @@ async function doRegister(){
     const{auth,createUserWithEmailAndPassword,db,doc,setDoc,serverTimestamp}=window._fb;
     const cred=await createUserWithEmailAndPassword(auth,email,pass);
     await setDoc(doc(db,'users',cred.user.uid),{uid:cred.user.uid,email,name,plan:'free',createdAt:serverTimestamp()});
+    sendWelcomeEmail(email,name);
     // Force immediate UI update — don't wait for onAuthStateChanged
     authState.user=cred.user;
     authState.isPro=false;
@@ -2250,6 +2368,17 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
       <button onclick="closeCloudModal()" style="background:var(--panel-bd);border:none;font-size:1.2rem;color:var(--page-fg);cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
     </div>
     <div id="cloud-cv-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════ ADMIN DASHBOARD MODAL ══════════════════ -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 style="margin:0;font-size:1.1rem">Dashboard Admin</h3>
+      <button onclick="closeAdmin()" style="background:var(--panel-bd);border:none;font-size:1.2rem;color:var(--page-fg);cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
+    </div>
+    <div id="admin-stats"></div>
   </div>
 </div>
 
