@@ -878,7 +878,7 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
       <div id="nav-auth-area">
       <!-- Shows when logged out -->
       <div id="nav-loggedout" style="display:flex;align-items:center;gap:8px">
-        <button class="icon-btn" onclick="authState.user ? null : openAuth('login')" id="btn-ncta-login" title="Se connecter">
+        <button class="icon-btn" onclick="authState.user ? null : openAuth('login')" id="btn-ncta-login" title="Sign in">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
         <button class="btn-nav-cta" id="btn-ncta" onclick="showBuild()">Start Building</button>
@@ -895,11 +895,11 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
           </div>
           <button id="admin-btn" onclick="openAdmin();toggleProfileMenu()" style="width:100%;padding:9px 12px;text-align:left;background:none;border:none;border-radius:8px;font-size:.85rem;color:var(--accent);cursor:pointer;font-family:inherit;display:none;align-items:center;gap:8px">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            Dashboard Admin
+            <span id="admin-btn-text">Dashboard Admin</span>
           </button>
-          <button onclick="doSignOut();toggleProfileMenu()" style="width:100%;padding:9px 12px;text-align:left;background:none;border:none;border-radius:8px;font-size:.85rem;color:var(--red);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px">
+          <button class="btn-signout" onclick="doSignOut();toggleProfileMenu()" style="width:100%;padding:9px 12px;text-align:left;background:none;border:none;border-radius:8px;font-size:.85rem;color:var(--red);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Déconnexion
+            Sign out
           </button>
         </div>
         <span class="nav-user-name" id="nav-user-name"></span>
@@ -940,7 +940,7 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
         <div style="font-size:.85rem;font-weight:700;color:var(--page-fg)" id="mm-user-name"></div>
         <div id="mm-user-plan" style="font-size:.72rem;color:var(--accent);font-weight:600">Plan Gratuit</div>
       </div>
-      <button onclick="doSignOut();closeMenu()" style="padding:7px 14px;border-radius:8px;border:1.5px solid var(--red);color:var(--red);background:none;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit">Déconnexion</button>
+      <button class="btn-signout" onclick="doSignOut();closeMenu()" style="padding:7px 14px;border-radius:8px;border:1.5px solid var(--red);color:var(--red);background:none;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit">Sign out</button>
     </div>
   </div>
 </div>
@@ -1199,8 +1199,8 @@ body.ar .coll-arrow{margin-left:0;margin-right:auto}
       <button class="btool" onclick="saveJSON()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span id="bt-save">Save</span></button>
       <button class="btool" onclick="document.getElementById('load-input').click()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span id="bt-load">Load</span></button>
       <input type="file" id="load-input" accept="application/json" style="display:none" onchange="loadJSON(event)"/>
-      <button class="btool" onclick="saveToCloud()" title="Sauvegarder en ligne"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg><span id="bt-cloud">Cloud</span></button>
-      <button class="btool" onclick="loadCloudCVs()" title="Mes CVs sauvegardés"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span id="bt-mycvs">My CVs</span></button>
+      <button class="btool" onclick="saveToCloud()" title="Save to cloud"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg><span id="bt-cloud">Cloud</span></button>
+      <button class="btool" onclick="loadCloudCVs()" title="My saved CVs"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span id="bt-mycvs">My CVs</span></button>
       <button class="btool primary" onclick="exportPDF()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span id="bt-pdf">PDF</span></button>
       <button class="btool" onclick="exportWord()" title="Export Word"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span id="bt-word">Word</span></button>
     </div>
@@ -1326,10 +1326,12 @@ const I18N = {
     test:{tag:'Reviews',title:'Loved by thousands of job seekers',sub:'Real feedback from people who used CVNova.',q1:'"The AI wrote my summary in 3 seconds — better than what I wrote in 3 hours. 2 interviews in a week."',n1:'Sarah Kaddour',r1:'Marketing Manager · Paris',q2:"\"Best CV builder I've used. Bilingual AR/FR, flawless PDF. Completely free — what's the catch?\"",n2:'Yassine Mansouri',r2:'Software Engineer · Algiers',q3:'"Needed an ATS-optimized CV for Dubai. CVNova\'s templates worked perfectly — starting my new job next month."',n3:'Leila Benali',r3:'Financial Analyst · Casablanca'},
     pri:{tag:'Pricing',title:'Simple, transparent pricing',sub:'All features free — forever.',p1:{tag:'Free',n:'Starter',p:'forever',f:['3 templates','PDF export','AR / FR / EN','AI assistant'],btn:'Start free'},p2:{tag:'Popular',n:'Pro (Current)',p:'/month',f:['10+ templates','Unlimited AI','Cover letter generator','Save / load data','Dark mode'],btn:'Upgrade to Pro'},p3:{tag:'Soon',n:'Premium',p:'per month',f:['All Pro features','AI job-match scoring','Cloud sync','Priority support'],btn:'Coming soon'}},
     faq:{tag:'FAQ',title:'Frequently asked questions',sub:'Everything you need to know about CVNova.',items:[['Is CVNova really free?','Yes. All 10+ templates, AI assistant, and PDF export are 100% free forever. No trial, no credit card.'],['How does the AI assistant work?','Our AI generates summaries, improves bullet points, suggests skills, writes cover letters, and translates content. Just click any "✨ AI" button.'],['Are the CVs ATS-friendly?','Yes. All templates use clean structure, standard fonts, and proper semantic HTML so they pass applicant tracking systems.'],['Does it support Arabic with RTL?','Yes. Full RTL layout with proper Arabic fonts (Cairo, Amiri). You can mix languages in the same CV.'],['Is my data private?','100% private. Everything runs in your browser. Your CV never leaves your device unless you choose to save it as a JSON file.'],['Can I edit my CV after exporting?','Yes. Use "Save" to download your CV as JSON, then "Load" to restore it anytime.']]},
+    blog:{tag:'Blog',title:'CV Tips & Career Advice',sub:'Expert guides to help you land your dream job.'},
     cta:{tag:'Start now',title:'Ready to create your CV?',sub:'Join thousands of job seekers who built their CV with CVNova — for free.',btn:'Generate my CV with AI',p:['Free forever','No account','Instant PDF']},
     foot:{text:'AI-powered CV builder for Arabic, French and English speakers. Free forever.',c1:'Product',c2:'Resources',c3:'Legal',c1l:['Templates','AI Assistant','How it works','Pricing'],c2l:['FAQ','Blog','CV guides','Interview tips'],c3l:['Privacy policy','Terms','Cookies','Contact'],bot1:'© 2026 CVNova. All rights reserved.',bot2:'Made with passion for job seekers.'},
     b:{back:'Back',tpl:'Template:',ai:'AI Assistant',save:'Save',load:'Load',pdf:'PDF',word:'Word',cloud:'Cloud',mycvs:'My CVs',title:'Build your CV',sub:'Fill the fields below — preview updates live.',live:'Live preview',photo:'Photo',photoUp:'Upload',photoRm:'Remove',photoHint:'No photo',info:'Personal information',fn:'First name',ln:'Last name',jt:'Job title',em:'Email',ph:'Phone',loc:'City / Country',web:'Website / LinkedIn',sum:'Professional summary',sumPh:'Describe your experience in 2-3 sentences...',exp:'Experience',edu:'Education',sk:'Skills',skPh:'e.g. JavaScript',skAdd:'Add',lng:'Languages',prj:'Projects',cert:'Certifications',int:'Interests',intPh:'e.g. Photography',addExp:'+ Add experience',addEdu:'+ Add education',addLng:'+ Add language',addPrj:'+ Add project',addCert:'+ Add certification',role:'Job title',company:'Company',place:'Location',start:'Start date',end:'End date',desc:'Description / achievements',degree:'Degree',school:'School / University',field:'Field of study',lName:'Language',lLvl:'Level',lLvls:['Beginner','Intermediate','Advanced','Fluent','Native'],pName:'Project name',pTech:'Technologies',pDesc:'Description',pLink:'Link (optional)',cName:'Certification',cIssuer:'Issuer',cDate:'Date'},
-    ai2:{title:'AI Assistant',tabs:{summary:'Summary',bullets:'Bullets',skills:'Skills',cover:'Cover letter',translate:'Translate'},sum:{label:'Describe yourself and your target role',ph:'e.g. Senior full stack developer with 5 years of experience in React and Node.js, looking for a lead role...',lbl2:'Tone',tones:['Professional','Friendly','Confident','Creative'],btn:'Generate summary',apply:'Apply to CV',copy:'Copy',regen:'Regenerate'},bul:{label:'Your current bullet or duty',ph:'e.g. Responsible for the website',lbl2:'Job title context',ph2:'e.g. Frontend Developer',btn:'Improve bullet'},sk:{label:'Your target role',ph:'e.g. Data Scientist',btn:'Suggest skills'},cov:{label:'Job title you are applying for',ph:'e.g. Senior Product Manager',lbl2:'Company / Context',ph2:'e.g. Stripe — a fintech startup',btn:'Write cover letter'},tr:{label:'Text to translate',ph:'Paste any text from your CV...',lbl2:'Target language',btn:'Translate',langs:{en:'English',fr:'French',ar:'Arabic'}},empty:'AI output will appear here…',loading:'AI is thinking…',errNoInput:'Please fill the input first.',err:'Something went wrong. Please try again.'}
+    ai2:{title:'AI Assistant',tabs:{summary:'Summary',bullets:'Bullets',skills:'Skills',cover:'Cover letter',translate:'Translate'},sum:{label:'Describe yourself and your target role',ph:'e.g. Senior full stack developer with 5 years of experience in React and Node.js, looking for a lead role...',lbl2:'Tone',tones:['Professional','Friendly','Confident','Creative'],btn:'Generate summary',apply:'Apply to CV',copy:'Copy',regen:'Regenerate'},bul:{label:'Your current bullet or duty',ph:'e.g. Responsible for the website',lbl2:'Job title context',ph2:'e.g. Frontend Developer',btn:'Improve bullet'},sk:{label:'Your target role',ph:'e.g. Data Scientist',btn:'Suggest skills'},cov:{label:'Job title you are applying for',ph:'e.g. Senior Product Manager',lbl2:'Company / Context',ph2:'e.g. Stripe — a fintech startup',btn:'Write cover letter'},tr:{label:'Text to translate',ph:'Paste any text from your CV...',lbl2:'Target language',btn:'Translate',langs:{en:'English',fr:'French',ar:'Arabic'}},empty:'AI output will appear here…',loading:'AI is thinking…',errNoInput:'Please fill the input first.',err:'Something went wrong. Please try again.'},
+    ui:{authTitle:'Welcome to CVNova',authSub:'Sign in to save and access your CVs.',tabLogin:'Sign in',tabRegister:'Create account',loginBtn:'Sign in',loginLoading:'Signing in...',loginOk:'Signed in!',regBtn:'Create my free account',regLoading:'Creating...',regOk:'Account created!',fillAll:'Please fill in all fields.',passMin:'8 characters minimum.',emailUsed:'Email already in use.',weakPass:'Password too weak.',badCred:'Incorrect email or password.',tooMany:'Too many attempts.',signout:'Sign out',alreadyHave:'Already have an account?',signInLink:'Sign in',googleContinue:'Continue with Google',googleOk:'Signed in with Google!',googleErr:'Google error: ',cloudSaveLogin:'Sign in to save online',cloudSaveOk:'CV saved to cloud',cloudUpdateOk:'CV updated in cloud',cloudSaveErr:'Cloud save error',cloudLoadLogin:'Sign in to see your CVs',cloudLoading:'Loading...',cloudEmpty:'No saved CVs.<br>Use "Cloud" to save.',cloudLoadErr:'Loading error',cloudLoadOk:'CV loaded from cloud',cloudDeleteConfirm:'Delete this CV from cloud?',cloudDeleteOk:'CV deleted',cloudDeleteErr:'Delete error',adminAccess:'Admin access required',adminLoading:'Loading statistics...',adminLoadErr:'Loading error: ',adminUsers:'Users',adminPro:'Pro Subscribers',adminCvs:'CVs created',adminRevenue:'Revenue / month',adminUserList:'User list',unlock:'Unlock',upgradeTo:'Upgrade to ',alreadyPro:'You are already Pro!',planNotFound:'Plan not found',loginFirst:'Sign in first.',proWelcome:'Welcome to Pro! Payment confirmed.',activationErr:'Activation error: ',paypalErr:'PayPal error: ',paypalCancel:'Payment cancelled.',paypalLoading:'Loading PayPal...',checkoutSecure:'Secure payment by PayPal · Cancel anytime',myCvs:'My saved CVs',dashAdmin:'Admin Dashboard',pdfGen:'Generating PDF…',pdfOk:'PDF downloaded',pdfFail:'PDF failed',wordOk:'Word exported',savedJson:'Saved',loadedJson:'Loaded',invalidFile:'Invalid file',lblEmail:'Email',lblPass:'Password',lblName:'Full name',lblOr:'or',noAccount:'No account yet?',signUpFree:'Sign up for free'}
   }
 };
 I18N.fr = {
@@ -1343,10 +1345,12 @@ I18N.fr = {
   test:{tag:'Avis',title:'Aimé par des milliers de chercheurs d\'emploi',sub:'Retours réels de personnes qui ont utilisé CVNova.',q1:'"L\'IA a écrit mon résumé en 3 secondes — mieux que ce que j\'ai fait en 3 heures. 2 entretiens en une semaine."',n1:'Sarah Kaddour',r1:'Responsable Marketing · Paris',q2:'"Le meilleur créateur de CV que j\'ai utilisé. Bilingue AR/FR, PDF impeccable. Complètement gratuit."',n2:'Yassine Mansouri',r2:'Ingénieur Logiciel · Alger',q3:'"Il me fallait un CV optimisé ATS pour Dubaï. Les modèles de CVNova ont parfaitement fonctionné."',n3:'Leila Benali',r3:'Analyste Financier · Casablanca'},
   pri:{tag:'Tarifs',title:'Tarification simple et transparente',sub:'Toutes les fonctionnalités gratuites — pour toujours.',p1:{tag:'Gratuit',n:'Starter',p:'pour toujours',f:['3 modèles','Export PDF','AR / FR / EN','Assistant IA'],btn:'Démarrer gratuitement'},p2:{tag:'Populaire',n:'Pro (Actuel)',p:'/mois',f:['10+ modèles','IA illimitée','Générateur de lettre','Sauvegarder / charger','Mode sombre'],btn:'Passer à Pro'},p3:{tag:'Bientôt',n:'Premium',p:'par mois',f:['Toutes les fonctionnalités Pro','Score IA adéquation poste','Sync cloud','Support prioritaire'],btn:'Bientôt disponible'}},
   faq:{tag:'FAQ',title:'Questions fréquentes',sub:'Tout ce qu\'il faut savoir sur CVNova.',items:[['CVNova est-il vraiment gratuit ?','Oui. Tous les 10+ modèles, l\'assistant IA et l\'export PDF sont gratuits à 100% pour toujours. Sans essai, sans carte.'],['Comment fonctionne l\'assistant IA ?','Notre IA génère des résumés, améliore les puces, suggère des compétences, rédige des lettres et traduit. Cliquez sur "✨ AI".'],['Les CV sont-ils compatibles ATS ?','Oui. Tous les modèles utilisent une structure propre, des polices standards et un HTML sémantique correct.'],['L\'arabe RTL est-il supporté ?','Oui. Mise en page RTL complète avec polices arabes (Cairo, Amiri). Vous pouvez mélanger les langues.'],['Mes données sont-elles privées ?','100% privé. Tout tourne dans votre navigateur. Votre CV ne quitte jamais votre appareil.'],['Puis-je modifier mon CV après export ?','Oui. Utilisez "Sauvegarder" pour télécharger votre CV en JSON, puis "Charger" pour le restaurer.']]},
-  cta:{tag:'Commencez maintenant',title:'Prêt à créer votre CV ?',sub:'Rejoignez des milliers de chercheurs d\'emploi qui ont créé leur CV avec CVNova — gratuitement.',btn:'Générer mon CV avec l\'IA',p:['Gratuit pour toujours','Sans compte','PDF instantané']},
+  blog:{tag:'Blog',title:'Conseils CV & Carrière',sub:'Guides experts pour décrocher l\'emploi de vos rêves.'},
+    cta:{tag:'Commencez maintenant',title:'Prêt à créer votre CV ?',sub:'Rejoignez des milliers de chercheurs d\'emploi qui ont créé leur CV avec CVNova — gratuitement.',btn:'Générer mon CV avec l\'IA',p:['Gratuit pour toujours','Sans compte','PDF instantané']},
   foot:{text:'Générateur de CV avec IA pour arabophones, francophones et anglophones. Gratuit pour toujours.',c1:'Produit',c2:'Ressources',c3:'Légal',c1l:['Modèles','Assistant IA','Comment ça marche','Tarifs'],c2l:['FAQ','Blog','Guides CV','Conseils entretien'],c3l:['Confidentialité','Conditions','Cookies','Contact'],bot1:'© 2026 CVNova. Tous droits réservés.',bot2:'Fait avec passion pour les chercheurs d\'emploi.'},
   b:{back:'Retour',tpl:'Modèle :',ai:'Assistant IA',save:'Sauver',load:'Charger',pdf:'PDF',word:'Word',cloud:'Cloud',mycvs:'Mes CVs',title:'Créez votre CV',sub:'Remplissez les champs — l\'aperçu se met à jour en direct.',live:'Aperçu en direct',photo:'Photo',photoUp:'Téléverser',photoRm:'Retirer',photoHint:'Aucune photo',info:'Informations personnelles',fn:'Prénom',ln:'Nom',jt:'Titre du poste',em:'Email',ph:'Téléphone',loc:'Ville / Pays',web:'Site Web / LinkedIn',sum:'Résumé professionnel',sumPh:'Décrivez votre expérience en 2-3 phrases...',exp:'Expérience',edu:'Formation',sk:'Compétences',skPh:'ex. JavaScript',skAdd:'Ajouter',lng:'Langues',prj:'Projets',cert:'Certifications',int:'Centres d\'intérêt',intPh:'ex. Photographie',addExp:'+ Ajouter une expérience',addEdu:'+ Ajouter une formation',addLng:'+ Ajouter une langue',addPrj:'+ Ajouter un projet',addCert:'+ Ajouter une certification',role:'Poste',company:'Entreprise',place:'Lieu',start:'Date début',end:'Date fin',desc:'Description / réalisations',degree:'Diplôme',school:'École / Université',field:'Domaine d\'étude',lName:'Langue',lLvl:'Niveau',lLvls:['Débutant','Intermédiaire','Avancé','Courant','Natif'],pName:'Nom du projet',pTech:'Technologies',pDesc:'Description',pLink:'Lien (optionnel)',cName:'Certification',cIssuer:'Émetteur',cDate:'Date'},
-  ai2:{title:'Assistant IA',tabs:{summary:'Résumé',bullets:'Puces',skills:'Compétences',cover:'Lettre',translate:'Traduire'},sum:{label:'Décrivez-vous et le poste visé',ph:'ex. Développeur full stack senior avec 5 ans d\'expérience en React et Node.js...',lbl2:'Ton',tones:['Professionnel','Amical','Confiant','Créatif'],btn:'Générer le résumé',apply:'Appliquer au CV',copy:'Copier',regen:'Régénérer'},bul:{label:'Votre puce ou tâche actuelle',ph:'ex. Responsable du site web',lbl2:'Contexte du poste',ph2:'ex. Développeur Frontend',btn:'Améliorer la puce'},sk:{label:'Poste visé',ph:'ex. Data Scientist',btn:'Suggérer des compétences'},cov:{label:'Poste pour lequel vous postulez',ph:'ex. Senior Product Manager',lbl2:'Entreprise / Contexte',ph2:'ex. Stripe — startup fintech',btn:'Rédiger la lettre'},tr:{label:'Texte à traduire',ph:'Collez tout texte de votre CV...',lbl2:'Langue cible',btn:'Traduire',langs:{en:'Anglais',fr:'Français',ar:'Arabe'}},empty:'La sortie IA apparaîtra ici…',loading:'L\'IA réfléchit…',errNoInput:'Veuillez remplir le champ.',err:'Une erreur est survenue. Réessayez.'}
+  ai2:{title:'Assistant IA',tabs:{summary:'Résumé',bullets:'Puces',skills:'Compétences',cover:'Lettre',translate:'Traduire'},sum:{label:'Décrivez-vous et le poste visé',ph:'ex. Développeur full stack senior avec 5 ans d\'expérience en React et Node.js...',lbl2:'Ton',tones:['Professionnel','Amical','Confiant','Créatif'],btn:'Générer le résumé',apply:'Appliquer au CV',copy:'Copier',regen:'Régénérer'},bul:{label:'Votre puce ou tâche actuelle',ph:'ex. Responsable du site web',lbl2:'Contexte du poste',ph2:'ex. Développeur Frontend',btn:'Améliorer la puce'},sk:{label:'Poste visé',ph:'ex. Data Scientist',btn:'Suggérer des compétences'},cov:{label:'Poste pour lequel vous postulez',ph:'ex. Senior Product Manager',lbl2:'Entreprise / Contexte',ph2:'ex. Stripe — startup fintech',btn:'Rédiger la lettre'},tr:{label:'Texte à traduire',ph:'Collez tout texte de votre CV...',lbl2:'Langue cible',btn:'Traduire',langs:{en:'Anglais',fr:'Français',ar:'Arabe'}},empty:'La sortie IA apparaîtra ici…',loading:'L\'IA réfléchit…',errNoInput:'Veuillez remplir le champ.',err:'Une erreur est survenue. Réessayez.'},
+  ui:{authTitle:'Bienvenue sur CVNova',authSub:'Connectez-vous pour sauvegarder et accéder à vos CV.',tabLogin:'Connexion',tabRegister:'Créer un compte',loginBtn:'Se connecter',loginLoading:'Connexion...',loginOk:'Connecté !',regBtn:'Créer mon compte gratuit',regLoading:'Création...',regOk:'Compte créé !',fillAll:'Remplissez tous les champs.',passMin:'8 caractères minimum.',emailUsed:'Email déjà utilisé.',weakPass:'Mot de passe trop faible.',badCred:'Email ou mot de passe incorrect.',tooMany:'Trop de tentatives.',signout:'Déconnexion',alreadyHave:'Déjà un compte ?',signInLink:'Se connecter',googleContinue:'Continuer avec Google',googleOk:'Connecté avec Google !',googleErr:'Erreur Google: ',cloudSaveLogin:'Connectez-vous pour sauvegarder en ligne',cloudSaveOk:'CV sauvegardé dans le cloud',cloudUpdateOk:'CV mis à jour dans le cloud',cloudSaveErr:'Erreur sauvegarde cloud',cloudLoadLogin:'Connectez-vous pour voir vos CVs',cloudLoading:'Chargement...',cloudEmpty:'Aucun CV sauvegardé.<br>Utilisez "Cloud" pour sauvegarder.',cloudLoadErr:'Erreur de chargement',cloudLoadOk:'CV chargé depuis le cloud',cloudDeleteConfirm:'Supprimer ce CV du cloud ?',cloudDeleteOk:'CV supprimé',cloudDeleteErr:'Erreur suppression',adminAccess:'Accès admin requis',adminLoading:'Chargement des statistiques...',adminLoadErr:'Erreur de chargement: ',adminUsers:'Utilisateurs',adminPro:'Abonnés Pro',adminCvs:'CVs créés',adminRevenue:'Revenus / mois',adminUserList:'Liste des utilisateurs',unlock:'Débloquer',upgradeTo:'Passer à ',alreadyPro:'Vous êtes déjà Pro !',planNotFound:'Plan introuvable',loginFirst:'Connectez-vous d\'abord.',proWelcome:'Bienvenue dans Pro ! Paiement confirmé.',activationErr:'Erreur activation: ',paypalErr:'Erreur PayPal: ',paypalCancel:'Paiement annulé.',paypalLoading:'Chargement PayPal...',checkoutSecure:'Paiement sécurisé par PayPal · Annulable à tout moment',myCvs:'Mes CVs sauvegardés',dashAdmin:'Dashboard Admin',pdfGen:'Génération du PDF…',pdfOk:'PDF téléchargé',pdfFail:'Échec du PDF',wordOk:'Word exporté',savedJson:'Sauvegardé',loadedJson:'Chargé',invalidFile:'Fichier invalide',lblEmail:'Email',lblPass:'Mot de passe',lblName:'Nom complet',lblOr:'ou',noAccount:'Pas encore de compte ?',signUpFree:'S\'inscrire gratuitement'}
 };
 I18N.ar = {
   logoTag:'منشئ السيرة الذاتية بالذكاء الاصطناعي', nav:{home:'الرئيسية',tpl:'القوالب',ai:'مساعد الذكاء',how:'طريقة العمل',pri:'الأسعار',start:'ابدأ الآن'},
@@ -1359,10 +1363,12 @@ I18N.ar = {
   test:{tag:'التقييمات',title:'أحبّه آلاف الباحثين عن عمل',sub:'تقييمات حقيقية من أناس استخدموا CVNova.',q1:'"كتب الذكاء الاصطناعي ملخصي في 3 ثوانٍ — أفضل مما كتبته في 3 ساعات. مقابلتان خلال أسبوع."',n1:'سارة قدور',r1:'مديرة تسويق · باريس',q2:'"أفضل منشئ سيرة ذاتية استخدمته. ثنائي اللغة AR/FR، PDF مثالي. مجاني تماماً."',n2:'ياسين منصوري',r2:'مهندس برمجيات · الجزائر',q3:'"احتجت سيرة ذاتية محسّنة لـATS في دبي. عملت قوالب CVNova بشكل مثالي."',n3:'ليلى بن علي',r3:'محللة مالية · الدار البيضاء'},
   pri:{tag:'الأسعار',title:'أسعار بسيطة وشفافة',sub:'جميع المزايا مجانية — للأبد.',p1:{tag:'مجاني',n:'مبتدئ',p:'للأبد',f:['3 قوالب','تصدير PDF','AR / FR / EN','مساعد ذكاء'],btn:'ابدأ مجاناً'},p2:{tag:'شائع',n:'برو',p:'/شهر',f:['10+ قوالب','ذكاء غير محدود','مولّد رسالة تغطية','حفظ / تحميل','الوضع الداكن'],btn:'الترقية إلى برو'},p3:{tag:'قريباً',n:'بريميوم',p:'شهرياً',f:['كل مزايا برو','تقييم ملاءمة الوظيفة','مزامنة سحابية','دعم أولوية'],btn:'قريباً'}},
   faq:{tag:'الأسئلة',title:'الأسئلة الشائعة',sub:'كل ما تحتاج معرفته عن CVNova.',items:[['هل CVNova مجاني حقاً؟','نعم. جميع القوالب (+10) ومساعد الذكاء الاصطناعي وتصدير PDF مجانية 100% للأبد. بدون تجربة، بدون بطاقة.'],['كيف يعمل مساعد الذكاء الاصطناعي؟','ذكاؤنا يولّد ملخصات، يحسّن النقاط، يقترح مهارات، يكتب رسائل تغطية ويترجم. اضغط "✨ AI".'],['هل السير الذاتية متوافقة ATS؟','نعم. جميع القوالب تستخدم بنية نظيفة وخطوطاً قياسية و HTML دلالي صحيح.'],['هل يدعم العربية RTL؟','نعم. دعم RTL كامل مع خطوط عربية (Cairo، Amiri). يمكنك خلط اللغات.'],['هل بياناتي خاصة؟','خاصة 100%. كل شيء يعمل في متصفحك. سيرتك لا تغادر جهازك أبداً.'],['هل يمكنني تعديل سيرتي بعد التصدير؟','نعم. استخدم "حفظ" لتحميل سيرتك كـJSON، ثم "تحميل" لاستعادتها.']]},
-  cta:{tag:'ابدأ الآن',title:'جاهز لإنشاء سيرتك؟',sub:'انضم إلى آلاف الباحثين عن عمل الذين أنشأوا سيرتهم مع CVNova — مجاناً.',btn:'أنشئ سيرتي بالذكاء',p:['مجاني للأبد','بدون حساب','PDF فوري']},
+  blog:{tag:'المدونة',title:'نصائح السيرة الذاتية والمهنة',sub:'أدلة احترافية لمساعدتك في الحصول على وظيفة أحلامك.'},
+    cta:{tag:'ابدأ الآن',title:'جاهز لإنشاء سيرتك؟',sub:'انضم إلى آلاف الباحثين عن عمل الذين أنشأوا سيرتهم مع CVNova — مجاناً.',btn:'أنشئ سيرتي بالذكاء',p:['مجاني للأبد','بدون حساب','PDF فوري']},
   foot:{text:'منشئ سيرة ذاتية بالذكاء الاصطناعي للعرب والفرنسيين والإنجليز. مجاني للأبد.',c1:'المنتج',c2:'الموارد',c3:'قانوني',c1l:['القوالب','مساعد الذكاء','طريقة العمل','الأسعار'],c2l:['الأسئلة','المدونة','دلائل السيرة','نصائح المقابلة'],c3l:['الخصوصية','الشروط','ملفات تعريف الارتباط','اتصل بنا'],bot1:'© 2026 CVNova. جميع الحقوق محفوظة.',bot2:'صُنع بشغف للباحثين عن عمل.'},
   b:{back:'رجوع',tpl:'القالب:',ai:'مساعد الذكاء',save:'حفظ',load:'تحميل',pdf:'PDF',word:'Word',cloud:'سحابة',mycvs:'ملفاتي',title:'أنشئ سيرتك',sub:'املأ الحقول — المعاينة تتحدث فورياً.',live:'معاينة مباشرة',photo:'الصورة',photoUp:'تحميل',photoRm:'إزالة',photoHint:'لا توجد صورة',info:'المعلومات الشخصية',fn:'الاسم الأول',ln:'اللقب',jt:'المسمى الوظيفي',em:'البريد الإلكتروني',ph:'الهاتف',loc:'المدينة / البلد',web:'الموقع / LinkedIn',sum:'الملخص المهني',sumPh:'صف خبرتك في 2-3 جمل...',exp:'الخبرة',edu:'التعليم',sk:'المهارات',skPh:'مثل JavaScript',skAdd:'إضافة',lng:'اللغات',prj:'المشاريع',cert:'الشهادات',int:'الاهتمامات',intPh:'مثل التصوير',addExp:'+ إضافة خبرة',addEdu:'+ إضافة تعليم',addLng:'+ إضافة لغة',addPrj:'+ إضافة مشروع',addCert:'+ إضافة شهادة',role:'المسمى',company:'الشركة',place:'المكان',start:'تاريخ البدء',end:'تاريخ الانتهاء',desc:'الوصف / الإنجازات',degree:'الشهادة',school:'المدرسة / الجامعة',field:'التخصص',lName:'اللغة',lLvl:'المستوى',lLvls:['مبتدئ','متوسط','متقدم','بطلاقة','لغة أم'],pName:'اسم المشروع',pTech:'التقنيات',pDesc:'الوصف',pLink:'الرابط (اختياري)',cName:'الشهادة',cIssuer:'المُصدر',cDate:'التاريخ'},
-  ai2:{title:'مساعد الذكاء',tabs:{summary:'الملخص',bullets:'النقاط',skills:'المهارات',cover:'رسالة تغطية',translate:'ترجمة'},sum:{label:'صف نفسك والوظيفة المستهدفة',ph:'مثل: مطور full stack أول مع 5 سنوات خبرة في React و Node.js...',lbl2:'النبرة',tones:['احترافية','ودية','واثقة','إبداعية'],btn:'ولّد الملخص',apply:'طبّق على السيرة',copy:'نسخ',regen:'إعادة التوليد'},bul:{label:'نقطتك أو مهمتك الحالية',ph:'مثل: مسؤول عن الموقع',lbl2:'سياق الوظيفة',ph2:'مثل: مطور Frontend',btn:'حسّن النقطة'},sk:{label:'الوظيفة المستهدفة',ph:'مثل: عالم بيانات',btn:'اقترح مهارات'},cov:{label:'الوظيفة المطلوبة',ph:'مثل: مدير منتج أول',lbl2:'الشركة / السياق',ph2:'مثل: Stripe — شركة fintech ناشئة',btn:'اكتب الرسالة'},tr:{label:'النص للترجمة',ph:'الصق أي نص من سيرتك...',lbl2:'اللغة الهدف',btn:'ترجم',langs:{en:'إنجليزي',fr:'فرنسي',ar:'عربي'}},empty:'ستظهر النتيجة هنا…',loading:'الذكاء يفكر…',errNoInput:'املأ الحقل أولاً.',err:'حدث خطأ. حاول مجدداً.'}
+  ai2:{title:'مساعد الذكاء',tabs:{summary:'الملخص',bullets:'النقاط',skills:'المهارات',cover:'رسالة تغطية',translate:'ترجمة'},sum:{label:'صف نفسك والوظيفة المستهدفة',ph:'مثل: مطور full stack أول مع 5 سنوات خبرة في React و Node.js...',lbl2:'النبرة',tones:['احترافية','ودية','واثقة','إبداعية'],btn:'ولّد الملخص',apply:'طبّق على السيرة',copy:'نسخ',regen:'إعادة التوليد'},bul:{label:'نقطتك أو مهمتك الحالية',ph:'مثل: مسؤول عن الموقع',lbl2:'سياق الوظيفة',ph2:'مثل: مطور Frontend',btn:'حسّن النقطة'},sk:{label:'الوظيفة المستهدفة',ph:'مثل: عالم بيانات',btn:'اقترح مهارات'},cov:{label:'الوظيفة المطلوبة',ph:'مثل: مدير منتج أول',lbl2:'الشركة / السياق',ph2:'مثل: Stripe — شركة fintech ناشئة',btn:'اكتب الرسالة'},tr:{label:'النص للترجمة',ph:'الصق أي نص من سيرتك...',lbl2:'اللغة الهدف',btn:'ترجم',langs:{en:'إنجليزي',fr:'فرنسي',ar:'عربي'}},empty:'ستظهر النتيجة هنا…',loading:'الذكاء يفكر…',errNoInput:'املأ الحقل أولاً.',err:'حدث خطأ. حاول مجدداً.'},
+  ui:{authTitle:'مرحباً بك في CVNova',authSub:'سجّل الدخول لحفظ سيراتك الذاتية والوصول إليها.',tabLogin:'تسجيل الدخول',tabRegister:'إنشاء حساب',loginBtn:'تسجيل الدخول',loginLoading:'جاري الدخول...',loginOk:'تم تسجيل الدخول!',regBtn:'إنشاء حسابي المجاني',regLoading:'جاري الإنشاء...',regOk:'تم إنشاء الحساب!',fillAll:'يرجى ملء جميع الحقول.',passMin:'8 أحرف كحد أدنى.',emailUsed:'البريد مستخدم بالفعل.',weakPass:'كلمة المرور ضعيفة.',badCred:'بريد أو كلمة مرور غير صحيحة.',tooMany:'محاولات كثيرة جداً.',signout:'تسجيل الخروج',alreadyHave:'لديك حساب بالفعل؟',signInLink:'تسجيل الدخول',googleContinue:'المتابعة مع Google',googleOk:'تم الدخول عبر Google!',googleErr:'خطأ Google: ',cloudSaveLogin:'سجّل الدخول للحفظ عبر الإنترنت',cloudSaveOk:'تم حفظ السيرة في السحابة',cloudUpdateOk:'تم تحديث السيرة في السحابة',cloudSaveErr:'خطأ في الحفظ السحابي',cloudLoadLogin:'سجّل الدخول لرؤية ملفاتك',cloudLoading:'جاري التحميل...',cloudEmpty:'لا توجد سير محفوظة.<br>استخدم "سحابة" للحفظ.',cloudLoadErr:'خطأ في التحميل',cloudLoadOk:'تم تحميل السيرة من السحابة',cloudDeleteConfirm:'حذف هذه السيرة من السحابة؟',cloudDeleteOk:'تم حذف السيرة',cloudDeleteErr:'خطأ في الحذف',adminAccess:'يلزم صلاحية المسؤول',adminLoading:'جاري تحميل الإحصائيات...',adminLoadErr:'خطأ في التحميل: ',adminUsers:'المستخدمون',adminPro:'مشتركو Pro',adminCvs:'السير المُنشأة',adminRevenue:'الإيرادات / شهر',adminUserList:'قائمة المستخدمين',unlock:'فتح القفل',upgradeTo:'الترقية إلى ',alreadyPro:'أنت بالفعل Pro!',planNotFound:'الخطة غير موجودة',loginFirst:'سجّل الدخول أولاً.',proWelcome:'مرحباً في Pro! تم تأكيد الدفع.',activationErr:'خطأ في التفعيل: ',paypalErr:'خطأ PayPal: ',paypalCancel:'تم إلغاء الدفع.',paypalLoading:'جاري تحميل PayPal...',checkoutSecure:'دفع آمن عبر PayPal · يمكن الإلغاء في أي وقت',myCvs:'سيراتي المحفوظة',dashAdmin:'لوحة التحكم',pdfGen:'جاري إنشاء PDF…',pdfOk:'تم تنزيل PDF',pdfFail:'فشل PDF',wordOk:'تم تصدير Word',savedJson:'تم الحفظ',loadedJson:'تم التحميل',invalidFile:'ملف غير صالح',lblEmail:'البريد الإلكتروني',lblPass:'كلمة المرور',lblName:'الاسم الكامل',lblOr:'أو',noAccount:'ليس لديك حساب؟',signUpFree:'إنشاء حساب مجاني'}
 };
 // ======================= STATE =======================
 const TEMPLATES = [
@@ -1442,6 +1448,7 @@ function applyI18n(){
   $('pritag').textContent=t.pri.tag;$('prititle').textContent=t.pri.title;$('prisub').textContent=t.pri.sub;
   ['p1','p2','p3'].forEach((p,i)=>{const pr=t.pri[p];const pp='pp'+(i+1);$(pp+'-tag').textContent=pr.tag;$(pp+'-n').textContent=pr.n;$(pp+'-p').textContent=pr.p;$(pp+'-btn').textContent=pr.btn;pr.f.forEach((f,j)=>{const el=$(pp+'-f'+(j+1));if(el)el.textContent=f})});
   $('faqtag').textContent=t.faq.tag;$('faqtitle').textContent=t.faq.title;$('faqsub').textContent=t.faq.sub;
+  if(t.blog){$('blogtag').textContent=t.blog.tag;$('blogtitle').textContent=t.blog.title;$('blogsub').textContent=t.blog.sub;}
   $('ctatag').textContent=t.cta.tag;$('ctatitle').textContent=t.cta.title;$('ctasub').textContent=t.cta.sub;$('ctabtn').textContent=t.cta.btn;
   t.cta.p.forEach((s,i)=>$('cp'+(i+1)).textContent=s);
   $('ftext').textContent=t.foot.text;$('fc1h').textContent=t.foot.c1;$('fc2h').textContent=t.foot.c2;$('fc3h').textContent=t.foot.c3;
@@ -1467,6 +1474,37 @@ function applyI18n(){
   const sel=$('sel-tpl');if(sel){const cur=sel.value;sel.innerHTML=TEMPLATES.map(tp=>`<option value="${tp.id}" ${tp.pro&&!authState.isPro?'disabled':''}>` + (tp.pro&&!authState.isPro?'🔒 ':'')+`${tp.name[state.lang]}</option>`).join('');sel.value=cur||state.tpl}
   // AI modal
   const a=t.ai2;$('ai-title').textContent=a.title;$('ait-sum').textContent=a.tabs.summary;$('ait-bul').textContent=a.tabs.bullets;$('ait-sk').textContent=a.tabs.skills;$('ait-cov').textContent=a.tabs.cover;$('ait-tr').textContent=a.tabs.translate;
+  // Auth / Checkout / Nav dynamic text
+  const u=t.ui;
+  const el=id=>document.getElementById(id);
+  if(el('auth-title'))el('auth-title').textContent=u.authTitle;
+  if(el('auth-subtitle'))el('auth-subtitle').textContent=u.authSub;
+  if(el('atab-login'))el('atab-login').textContent=u.tabLogin;
+  if(el('atab-register'))el('atab-register').textContent=u.tabRegister;
+  if(el('auth-login-btn'))el('auth-login-btn').textContent=u.loginBtn;
+  if(el('auth-reg-btn'))el('auth-reg-btn').textContent=u.regBtn;
+  if(el('auth-footer-text'))el('auth-footer-text').innerHTML=u.alreadyHave+' <a href="#" onclick="authTab(\'login\');return false">'+u.signInLink+'</a>';
+  if(el('auth-footer-reg'))el('auth-footer-reg').innerHTML=u.alreadyHave+' <a href="#" onclick="authTab(\'login\');return false">'+u.signInLink+'</a>';
+  if(el('auth-google-text'))el('auth-google-text').textContent=u.googleContinue;
+  document.querySelectorAll('.auth-google span').forEach(s=>s.textContent=u.googleContinue);
+  if(el('checkout-plan-name'))el('checkout-plan-name').textContent=u.upgradeTo+'Pro';
+  if(el('checkout-secure'))el('checkout-secure').textContent=u.checkoutSecure;
+  if(el('cloud-modal-title'))el('cloud-modal-title').textContent=u.myCvs;
+  if(el('admin-modal-title'))el('admin-modal-title').textContent=u.dashAdmin;
+  // Auth form labels
+  if(el('auth-lbl-email'))el('auth-lbl-email').textContent=u.lblEmail;
+  if(el('auth-lbl-pass'))el('auth-lbl-pass').textContent=u.lblPass;
+  if(el('auth-lbl-pass2'))el('auth-lbl-pass2').textContent=u.lblPass;
+  if(el('auth-lbl-name'))el('auth-lbl-name').textContent=u.lblName;
+  if(el('auth-pass2'))el('auth-pass2').placeholder=u.passMin;
+  document.querySelectorAll('.auth-divider span').forEach(s=>s.textContent=u.lblOr);
+  // Login footer (no account yet)
+  if(el('auth-footer-text'))el('auth-footer-text').innerHTML=u.noAccount+' <a href="#" onclick="authTab(\'register\');return false">'+u.signUpFree+'</a>';
+  // Nav signout buttons + admin btn
+  document.querySelectorAll('.btn-signout').forEach(b=>{const svg=b.querySelector('svg');b.textContent=u.signout;if(svg)b.prepend(svg);});
+  if(el('admin-btn-text'))el('admin-btn-text').textContent=u.dashAdmin;
+  // Template lock buttons
+  document.querySelectorAll('.tpl-lock-btn').forEach(b=>b.textContent=u.unlock);
 }
 
 function toggleTheme(){state.theme=state.theme==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',state.theme);var sl=state.theme==='light'?'block':'none',sd=state.theme==='dark'?'block':'none';$('ic-sun').style.display=sl;$('ic-moon').style.display=sd;var ms=$('mm-ic-sun'),mm=$('mm-ic-moon');if(ms)ms.style.display=sl;if(mm)mm.style.display=sd;try{localStorage.setItem('cvnova-theme',state.theme)}catch(e){}}
@@ -1490,7 +1528,7 @@ function renderTplGallery(){
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           PRO
         </div>
-        <button class="tpl-lock-btn" onclick="event.stopPropagation();openCheckout('pro_monthly')">Débloquer</button>
+        <button class="tpl-lock-btn" onclick="event.stopPropagation();openCheckout('pro_monthly')">${T().ui.unlock}</button>
       </div>`:''}
       <div class="tpl-prev"><div class="tpl-prev-scale" id="prev-${tp.id}"></div></div>
       <div class="tpl-meta"><h3>${esc(tp.name[state.lang])}</h3><p>${esc(tp.desc[state.lang])}</p>${isLocked?'<span style="font-size:.75rem;color:var(--accent);font-weight:700">🔒 Pro</span>':`<span class="tpl-use">${esc(t.use)} →</span>`}</div>
@@ -1632,12 +1670,12 @@ function removePhoto(){state.data.photo='';$('photo-input').value='';renderBuild
 function zoomPrev(d){state.zoom=d===0?1:Math.max(.5,Math.min(1.5,state.zoom+d));$('zoom-val').textContent=Math.round(state.zoom*100)+'%';const cvo=$('cvo');if(cvo)cvo.style.transform=`scale(${state.zoom})`}
 
 // Save/Load (local JSON)
-function saveJSON(){const blob=new Blob([JSON.stringify(state.data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='cvnova-data.json';a.click();URL.revokeObjectURL(url);toast('Saved','success')}
-function loadJSON(e){const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);Object.keys(emptyData()).forEach(k=>{if(d[k]!==undefined)state.data[k]=d[k]});renderBuilder();renderPreview();toast('Loaded','success')}catch(err){toast('Invalid file','error')}};r.readAsText(f)}
+function saveJSON(){const blob=new Blob([JSON.stringify(state.data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='cvnova-data.json';a.click();URL.revokeObjectURL(url);toast(T().ui.savedJson,'success')}
+function loadJSON(e){const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);Object.keys(emptyData()).forEach(k=>{if(d[k]!==undefined)state.data[k]=d[k]});renderBuilder();renderPreview();toast(T().ui.loadedJson,'success')}catch(err){toast(T().ui.invalidFile,'error')}};r.readAsText(f)}
 
 // ======================= CLOUD SAVE (Firestore) =======================
 async function saveToCloud(){
-  if(!authState.user){openAuth('login');toast('Connectez-vous pour sauvegarder en ligne','info');return;}
+  if(!authState.user){openAuth('login');toast(T().ui.cloudSaveLogin,'info');return;}
   sync();
   const name=((state.data.first||'')+' '+(state.data.last||'')).trim()||'Mon CV';
   try{
@@ -1645,40 +1683,40 @@ async function saveToCloud(){
     const cvData={name:name,data:JSON.parse(JSON.stringify(state.data)),template:state.tpl,color:state.color,lang:state.lang,updatedAt:serverTimestamp()};
     if(state.cloudCvId){
       await setDoc(doc(db,'users',authState.user.uid,'cvs',state.cloudCvId),cvData,{merge:true});
-      toast('CV mis à jour dans le cloud ☁️','success');
+      toast(T().ui.cloudUpdateOk+' ☁️','success');
     }else{
       cvData.createdAt=serverTimestamp();
       const ref=await addDoc(collection(db,'users',authState.user.uid,'cvs'),cvData);
       state.cloudCvId=ref.id;
-      toast('CV sauvegardé dans le cloud ☁️','success');
+      toast(T().ui.cloudSaveOk+' ☁️','success');
     }
-  }catch(e){console.error(e);toast('Erreur sauvegarde cloud','error');}
+  }catch(e){console.error(e);toast(T().ui.cloudSaveErr,'error');}
 }
 async function loadCloudCVs(){
-  if(!authState.user){openAuth('login');toast('Connectez-vous pour voir vos CVs','info');return;}
+  if(!authState.user){openAuth('login');toast(T().ui.cloudLoadLogin,'info');return;}
   const list=$('cloud-cv-list');if(!list)return;
-  list.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px">Chargement...</p>';
+  list.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px">'+T().ui.cloudLoading+'</p>';
   $('cloud-overlay').classList.add('open');
   try{
     const{db,collection,getDocs,query,orderBy}=window._fb;
     const q=query(collection(db,'users',authState.user.uid,'cvs'),orderBy('updatedAt','desc'));
     const snap=await getDocs(q);
-    if(snap.empty){list.innerHTML='<p style="text-align:center;color:var(--muted);padding:30px">Aucun CV sauvegardé.<br>Utilisez "☁️ Cloud" pour sauvegarder.</p>';return;}
+    if(snap.empty){list.innerHTML='<p style="text-align:center;color:var(--muted);padding:30px">'+T().ui.cloudEmpty+'</p>';return;}
     list.innerHTML='';
     snap.forEach(d=>{
       const cv=d.data();const id=d.id;
       const date=cv.updatedAt?new Date(cv.updatedAt.seconds*1000).toLocaleDateString():'—';
       const el=document.createElement('div');el.className='cloud-cv-item';
-      el.innerHTML=`<div class="cloud-cv-info"><strong>${esc(cv.name||'Sans nom')}</strong><span>${date} · ${esc(cv.template||'classic')}</span></div><div class="cloud-cv-actions"><button class="cloud-btn load" onclick="loadFromCloud('${id}')">Charger</button><button class="cloud-btn del" onclick="deleteFromCloud('${id}',this.closest('.cloud-cv-item'))">🗑️</button></div>`;
+      el.innerHTML=`<div class="cloud-cv-info"><strong>${esc(cv.name||'CV')}</strong><span>${date} · ${esc(cv.template||'classic')}</span></div><div class="cloud-cv-actions"><button class="cloud-btn load" onclick="loadFromCloud('${id}')">${T().b.load}</button><button class="cloud-btn del" onclick="deleteFromCloud('${id}',this.closest('.cloud-cv-item'))">🗑️</button></div>`;
       list.appendChild(el);
     });
-  }catch(e){console.error(e);list.innerHTML='<p style="text-align:center;color:var(--red);padding:20px">Erreur de chargement</p>';}
+  }catch(e){console.error(e);list.innerHTML='<p style="text-align:center;color:var(--red);padding:20px">'+T().ui.cloudLoadErr+'</p>';}
 }
 async function loadFromCloud(cvId){
   try{
     const{db,doc,getDoc}=window._fb;
     const snap=await getDoc(doc(db,'users',authState.user.uid,'cvs',cvId));
-    if(!snap.exists()){toast('CV non trouvé','error');return;}
+    if(!snap.exists()){toast(T().ui.cloudLoadErr,'error');return;}
     const cv=snap.data();
     Object.keys(emptyData()).forEach(k=>{if(cv.data&&cv.data[k]!==undefined)state.data[k]=cv.data[k]});
     if(cv.template)state.tpl=cv.template;
@@ -1686,18 +1724,18 @@ async function loadFromCloud(cvId){
     if(cv.lang)setLang(cv.lang);
     state.cloudCvId=cvId;
     renderBuilder();renderPreview();closeCloudModal();
-    toast('CV chargé depuis le cloud ☁️','success');
-  }catch(e){console.error(e);toast('Erreur de chargement','error');}
+    toast(T().ui.cloudLoadOk+' ☁️','success');
+  }catch(e){console.error(e);toast(T().ui.cloudLoadErr,'error');}
 }
 async function deleteFromCloud(cvId,el){
-  if(!confirm('Supprimer ce CV du cloud ?'))return;
+  if(!confirm(T().ui.cloudDeleteConfirm))return;
   try{
     const{db,doc,deleteDoc}=window._fb;
     await deleteDoc(doc(db,'users',authState.user.uid,'cvs',cvId));
     if(el)el.remove();
     if(state.cloudCvId===cvId)state.cloudCvId=null;
-    toast('CV supprimé','info');
-  }catch(e){console.error(e);toast('Erreur suppression','error');}
+    toast(T().ui.cloudDeleteOk,'info');
+  }catch(e){console.error(e);toast(T().ui.cloudDeleteErr,'error');}
 }
 function closeCloudModal(){$('cloud-overlay').classList.remove('open');}
 
@@ -1705,10 +1743,10 @@ function closeCloudModal(){$('cloud-overlay').classList.remove('open');}
 const ADMIN_EMAILS=['chahinediaf23@gmail.com'];
 function isAdmin(){return authState.user && ADMIN_EMAILS.includes(authState.user.email);}
 async function openAdmin(){
-  if(!isAdmin()){toast('Accès admin requis','error');return;}
+  if(!isAdmin()){toast(T().ui.adminAccess,'error');return;}
   $('admin-overlay').classList.add('open');
   const stats=$('admin-stats');
-  stats.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px">Chargement des statistiques...</p>';
+  stats.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px">'+T().ui.adminLoading+'</p>';
   try{
     const{db,collection,getDocs,query,doc,getDoc}=window._fb;
     // Get all users
@@ -1726,19 +1764,19 @@ async function openAdmin(){
     const monthlyRevenue=proUsers*4.99;
     stats.innerHTML=`
       <div class="admin-grid">
-        <div class="admin-card"><div class="admin-num">${totalUsers}</div><div class="admin-label">Utilisateurs</div></div>
-        <div class="admin-card pro"><div class="admin-num">${proUsers}</div><div class="admin-label">Abonnés Pro</div></div>
-        <div class="admin-card"><div class="admin-num">${cvCount}</div><div class="admin-label">CVs créés</div></div>
-        <div class="admin-card rev"><div class="admin-num">$${monthlyRevenue.toFixed(2)}</div><div class="admin-label">Revenus / mois</div></div>
+        <div class="admin-card"><div class="admin-num">${totalUsers}</div><div class="admin-label">${T().ui.adminUsers}</div></div>
+        <div class="admin-card pro"><div class="admin-num">${proUsers}</div><div class="admin-label">${T().ui.adminPro}</div></div>
+        <div class="admin-card"><div class="admin-num">${cvCount}</div><div class="admin-label">${T().ui.adminCvs}</div></div>
+        <div class="admin-card rev"><div class="admin-num">$${monthlyRevenue.toFixed(2)}</div><div class="admin-label">${T().ui.adminRevenue}</div></div>
       </div>
-      <h4 style="margin:20px 0 10px;font-size:.95rem">Liste des utilisateurs</h4>
+      <h4 style="margin:20px 0 10px;font-size:.95rem">${T().ui.adminUserList}</h4>
       <div class="admin-table-wrap">
         <table class="admin-table">
           <thead><tr><th>Email</th><th>Nom</th><th>Plan</th><th>Inscription</th></tr></thead>
           <tbody>${userList.map(u=>`<tr><td>${esc(u.email)}</td><td>${esc(u.name)}</td><td><span class="admin-plan-tag ${u.plan}">${u.plan}</span></td><td>${u.created}</td></tr>`).join('')}</tbody>
         </table>
       </div>`;
-  }catch(e){console.error(e);stats.innerHTML='<p style="text-align:center;color:var(--red);padding:20px">Erreur de chargement: '+esc(e.message)+'</p>';}
+  }catch(e){console.error(e);stats.innerHTML='<p style="text-align:center;color:var(--red);padding:20px">'+T().ui.adminLoadErr+esc(e.message)+'</p>';}
 }
 function closeAdmin(){$('admin-overlay').classList.remove('open');}
 
@@ -1766,7 +1804,7 @@ function exportWord(){
   const a=document.createElement('a');a.href=url;a.download=fullName.replace(/\s+/g,'_')+'.doc';a.click();
   URL.revokeObjectURL(url);
   state.zoom=prev;zoomPrev(0);el.style.transform=`scale(${prev})`;
-  toast('Word exported','success');
+  toast(T().ui.wordOk,'success');
 }
 
 // ======================= AUTO-SAVE (localStorage) =======================
@@ -1795,7 +1833,7 @@ async function exportPDF(){
   const el=$('cvo');if(!el)return;const prev=state.zoom;state.zoom=1;el.style.transform='scale(1)';
   const fullName=((state.data.first||'')+' '+(state.data.last||'')).trim()||'cv';
   const opt={margin:0,filename:fullName.replace(/\s+/g,'_')+'.pdf',image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,letterRendering:true,backgroundColor:'#ffffff'},jsPDF:{unit:'pt',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}};
-  try{toast('Generating PDF…','info');await html2pdf().set(opt).from(el).save();toast('PDF downloaded','success');try{await incrementCVCounter();}catch(ce){console.warn('Counter update failed:',ce)}}catch(e){toast('PDF failed','error');console.error(e)}
+  try{toast(T().ui.pdfGen,'info');await html2pdf().set(opt).from(el).save();toast(T().ui.pdfOk,'success');try{await incrementCVCounter();}catch(ce){console.warn('Counter update failed:',ce)}}catch(e){toast(T().ui.pdfFail,'error');console.error(e)}
   state.zoom=prev;zoomPrev(0);el.style.transform=`scale(${prev})`;
 }
 // ======================= PREVIEW / CV RENDER =======================
@@ -2069,7 +2107,7 @@ waitForFB(()=>{
     if(result && result.user){
       sessionStorage.removeItem('cvnova_redirect_auth');
       closeAuth();
-      toast('Connecté avec Google !','success');
+      toast(T().ui.googleOk,'success');
     }
   }).catch(e=>{
     sessionStorage.removeItem('cvnova_redirect_auth');
@@ -2100,15 +2138,9 @@ function updateNavAuth(loggedIn){
   }
   // Update mobile menu button text
   const mmLoginBtn=$('mm-login-btn');
-  if(mmLoginBtn){
-    const loginTxt={en:'Sign in',fr:'Se connecter',ar:'تسجيل الدخول'};
-    mmLoginBtn.textContent=loginTxt[state.lang]||loginTxt.fr;
-  }
+  if(mmLoginBtn) mmLoginBtn.textContent=T().ui.loginBtn;
   const mmStart=$('mm-start');
-  if(mmStart){
-    const startTxt={en:'Start Building',fr:'Commencer',ar:'ابدأ الآن'};
-    mmStart.textContent=startTxt[state.lang]||startTxt.fr;
-  }
+  if(mmStart) mmStart.textContent=T().nav.start;
   const lo=$('nav-loggedout'),li=$('nav-loggedin');if(!lo||!li)return;
   if(loggedIn&&authState.user){
     lo.style.display='none';
@@ -2127,7 +2159,7 @@ function updateNavAuth(loggedIn){
       mmOut.style.display='none';mmIn.style.display='flex';
       const name=authState.user.displayName||authState.user.email.split('@')[0];
       const mmName=$('mm-user-name');if(mmName)mmName.textContent=name;
-      const mmPlan=$('mm-user-plan');if(mmPlan)mmPlan.textContent=authState.isPro?'Plan Pro ⭐':'Plan Gratuit';
+      const mmPlan=$('mm-user-plan');if(mmPlan)mmPlan.textContent=authState.isPro?'Pro ⭐':'Free';
     }else{mmOut.style.display='flex';mmIn.style.display='none';}
   }
 }
@@ -2143,8 +2175,8 @@ function authTab(tab){
 async function doLogin(){
   const email=$('auth-email').value.trim(),pass=$('auth-pass').value;
   const msg=$('auth-msg-login'),btn=$('auth-login-btn');
-  if(!email||!pass){msg.className='auth-msg err';msg.textContent='Remplissez tous les champs.';return;}
-  btn.disabled=true;btn.textContent='Connexion...';
+  if(!email||!pass){msg.className='auth-msg err';msg.textContent=T().ui.fillAll;return;}
+  btn.disabled=true;btn.textContent=T().ui.loginLoading;
   try{
     const{auth,signInWithEmailAndPassword}=window._fb;
     const cred=await signInWithEmailAndPassword(auth,email,pass);
@@ -2153,19 +2185,19 @@ async function doLogin(){
     authState.isPro=false;
     try{await loadUserProfile(user);}catch(pe){console.error('Profile load error:',pe);}
     updateNavAuth(true);
-    msg.className='auth-msg ok';msg.textContent='Connecté !';
+    msg.className='auth-msg ok';msg.textContent=T().ui.loginOk;
     setTimeout(closeAuth,800);
   }catch(e){
     msg.className='auth-msg err';
-    msg.textContent=e.code==='auth/invalid-credential'?'Email ou mot de passe incorrect.':e.code==='auth/too-many-requests'?'Trop de tentatives.':'Erreur: '+e.message;
-  }finally{btn.disabled=false;btn.textContent='Se connecter';}
+    msg.textContent=e.code==='auth/invalid-credential'?T().ui.badCred:e.code==='auth/too-many-requests'?T().ui.tooMany:'Error: '+e.message;
+  }finally{btn.disabled=false;btn.textContent=T().ui.loginBtn;}
 }
 async function doRegister(){
   const name=$('auth-name').value.trim(),email=$('auth-email2').value.trim(),pass=$('auth-pass2').value;
   const msg=$('auth-msg-reg'),btn=$('auth-reg-btn');
-  if(!name||!email||!pass){msg.className='auth-msg err';msg.textContent='Remplissez tous les champs.';return;}
-  if(pass.length<8){msg.className='auth-msg err';msg.textContent='8 caracteres minimum.';return;}
-  btn.disabled=true;btn.textContent='Creation...';
+  if(!name||!email||!pass){msg.className='auth-msg err';msg.textContent=T().ui.fillAll;return;}
+  if(pass.length<8){msg.className='auth-msg err';msg.textContent=T().ui.passMin;return;}
+  btn.disabled=true;btn.textContent=T().ui.regLoading;
   try{
     const{auth,createUserWithEmailAndPassword,db,doc,setDoc,serverTimestamp}=window._fb;
     const cred=await createUserWithEmailAndPassword(auth,email,pass);
@@ -2176,12 +2208,12 @@ async function doRegister(){
     authState.isPro=false;
     try{await loadUserProfile(cred.user);}catch(pe){console.error('Profile load error:',pe);}
     updateNavAuth(true);
-    msg.className='auth-msg ok';msg.textContent='Compte créé !';
+    msg.className='auth-msg ok';msg.textContent=T().ui.regOk;
     setTimeout(closeAuth,900);
   }catch(e){
     msg.className='auth-msg err';
-    msg.textContent=e.code==='auth/email-already-in-use'?'Email deja utilise.':e.code==='auth/weak-password'?'Mot de passe trop faible.':'Erreur: '+e.message;
-  }finally{btn.disabled=false;btn.textContent='Creer mon compte gratuit';}
+    msg.textContent=e.code==='auth/email-already-in-use'?T().ui.emailUsed:e.code==='auth/weak-password'?T().ui.weakPass:'Error: '+e.message;
+  }finally{btn.disabled=false;btn.textContent=T().ui.regBtn;}
 }
 async function doGoogleLogin(){
   try{
@@ -2196,7 +2228,7 @@ async function doGoogleLogin(){
     }
     const result = await signInWithPopup(auth,GoogleAuthProvider);
     if(result && result.user){closeAuth();}
-  }catch(e){if(e.code!=='auth/popup-closed-by-user')toast('Erreur Google: '+e.message,'error');}
+  }catch(e){if(e.code!=='auth/popup-closed-by-user')toast(T().ui.googleErr+e.message,'error');}
 }
 function toggleProfileMenu(){
   const menu = $('profile-menu');
@@ -2229,12 +2261,12 @@ async function doSignOut(){
 $('auth-overlay').addEventListener('click',e=>{if(e.target===$('auth-overlay'))closeAuth();});
 // Stripe
 function openCheckout(planKey){
-  if(!authState.user){openAuth('login');toast('Connectez-vous d\'abord.','info');return;}
-  if(authState.isPro){toast('Vous etes deja Pro!','success');return;}
+  if(!authState.user){openAuth('login');toast(T().ui.loginFirst,'info');return;}
+  if(authState.isPro){toast(T().ui.alreadyPro,'success');return;}
   const plan=PAYPAL_PLANS[planKey];
-  if(!plan){toast('Plan introuvable','error');return;}
+  if(!plan){toast(T().ui.planNotFound,'error');return;}
   authState.currentPlan=planKey;
-  $('checkout-plan-name').textContent='Passer a '+plan.name;
+  $('checkout-plan-name').textContent=T().ui.upgradeTo+plan.name;
   $('checkout-price').textContent='$'+plan.price+(planKey.includes('monthly')?' / mois':' / an');
   $('checkout-overlay').classList.add('open');
   const container=$('paypal-button-container');
@@ -2255,14 +2287,14 @@ function openCheckout(planKey){
             plan:'pro',upgradedAt:serverTimestamp(),planKey:authState.currentPlan,paypalOrderId:details.id
           });
           authState.isPro=true;updateNavAuth(true);closeCheckout();
-          toast('Bienvenue dans Pro! Paiement confirme.','success');
-        }catch(e){$('checkout-msg').textContent='Erreur activation: '+e.message;}
+          toast(T().ui.proWelcome,'success');
+        }catch(e){$('checkout-msg').textContent=T().ui.activationErr+e.message;}
       },
-      onError:function(err){$('checkout-msg').textContent='Erreur PayPal: '+err;},
-      onCancel:function(){$('checkout-msg').textContent='Paiement annule.';}
+      onError:function(err){$('checkout-msg').textContent=T().ui.paypalErr+err;},
+      onCancel:function(){$('checkout-msg').textContent=T().ui.paypalCancel;}
     }).render('#paypal-button-container');
   }else if(typeof paypal==='undefined'){
-    if(container) container.innerHTML='<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:12px">Chargement PayPal...</p>';
+    if(container) container.innerHTML='<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:12px">'+T().ui.paypalLoading+'</p>';
   }
 }
 function closeCheckout(){$('checkout-overlay').classList.remove('open');$('checkout-msg').textContent='';}
@@ -2295,44 +2327,44 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
       <!-- Login Form -->
       <div id="auth-login-form">
         <div class="auth-field">
-          <label>Email</label>
-          <input type="email" id="auth-email" placeholder="vous@email.com" autocomplete="email"/>
+          <label id="auth-lbl-email">Email</label>
+          <input type="email" id="auth-email" placeholder="you@email.com" autocomplete="email"/>
         </div>
         <div class="auth-field">
-          <label>Mot de passe</label>
+          <label id="auth-lbl-pass">Password</label>
           <input type="password" id="auth-pass" placeholder="••••••••" autocomplete="current-password"/>
         </div>
         <button class="auth-btn" id="auth-login-btn" onclick="doLogin()">Se connecter</button>
         <div class="auth-divider"><span>ou</span></div>
         <button class="auth-google" onclick="doGoogleLogin()">
           <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Continuer avec Google
+          <span id="auth-google-text">Continuer avec Google</span>
         </button>
         <p class="auth-msg" id="auth-msg-login"></p>
-        <p class="auth-footer">Pas encore de compte ? <a href="#" onclick="authTab('register');return false">S'inscrire gratuitement</a></p>
+        <p class="auth-footer" id="auth-footer-text">Pas encore de compte ? <a href="#" onclick="authTab('register');return false">S'inscrire gratuitement</a></p>
       </div>
       <!-- Register Form -->
       <div id="auth-register-form" style="display:none">
         <div class="auth-field">
-          <label>Nom complet</label>
+          <label id="auth-lbl-name">Full name</label>
           <input type="text" id="auth-name" placeholder="Sarah Kaddour" autocomplete="name"/>
         </div>
         <div class="auth-field">
           <label>Email</label>
-          <input type="email" id="auth-email2" placeholder="vous@email.com" autocomplete="email"/>
+          <input type="email" id="auth-email2" placeholder="you@email.com" autocomplete="email"/>
         </div>
         <div class="auth-field">
-          <label>Mot de passe</label>
-          <input type="password" id="auth-pass2" placeholder="8 caractères minimum" autocomplete="new-password"/>
+          <label id="auth-lbl-pass2">Password</label>
+          <input type="password" id="auth-pass2" placeholder="8 characters min" autocomplete="new-password"/>
         </div>
         <button class="auth-btn" id="auth-reg-btn" onclick="doRegister()">Créer mon compte gratuit</button>
         <div class="auth-divider"><span>ou</span></div>
         <button class="auth-google" onclick="doGoogleLogin()">
           <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Continuer avec Google
+          <span>Continuer avec Google</span>
         </button>
         <p class="auth-msg" id="auth-msg-reg"></p>
-        <p class="auth-footer">Déjà un compte ? <a href="#" onclick="authTab('login');return false">Se connecter</a></p>
+        <p class="auth-footer" id="auth-footer-reg"></p>
       </div>
     </div>
   </div>
@@ -2354,7 +2386,7 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
     <div id="paypal-button-container" style="margin:8px 0"></div>
     <div class="checkout-secure">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      Paiement sécurisé par PayPal · Annulable à tout moment
+      <span id="checkout-secure">Paiement sécurisé par PayPal · Annulable à tout moment</span>
     </div>
     <p class="auth-msg err" id="checkout-msg" style="margin-top:10px"></p>
   </div>
@@ -2364,7 +2396,7 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
 <div class="cloud-overlay" id="cloud-overlay">
   <div class="cloud-box">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h3 style="margin:0;font-size:1.1rem">Mes CVs sauvegardés</h3>
+      <h3 style="margin:0;font-size:1.1rem" id="cloud-modal-title">Mes CVs sauvegardés</h3>
       <button onclick="closeCloudModal()" style="background:var(--panel-bd);border:none;font-size:1.2rem;color:var(--page-fg);cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
     </div>
     <div id="cloud-cv-list"></div>
@@ -2375,7 +2407,7 @@ $('checkout-overlay').addEventListener('click',e=>{if(e.target===$('checkout-ove
 <div class="admin-overlay" id="admin-overlay">
   <div class="admin-box">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h3 style="margin:0;font-size:1.1rem">Dashboard Admin</h3>
+      <h3 style="margin:0;font-size:1.1rem" id="admin-modal-title">Dashboard Admin</h3>
       <button onclick="closeAdmin()" style="background:var(--panel-bd);border:none;font-size:1.2rem;color:var(--page-fg);cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
     </div>
     <div id="admin-stats"></div>
