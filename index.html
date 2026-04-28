@@ -1558,7 +1558,7 @@ async function exportPDF(){
   const fullName=((state.data.first||'')+' '+(state.data.last||'')).trim()||'cv';
   const opt={margin:0,filename:fullName.replace(/\s+/g,'_')+'.pdf',image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,letterRendering:true,backgroundColor:'#ffffff'},jsPDF:{unit:'pt',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}};
   try{toast('Generating PDF…','info');await html2pdf().set(opt).from(el).save();toast('PDF downloaded','success');}catch(e){toast('PDF failed','error');console.error(e)}
-  try{incrementCVCounter();}catch(ce){console.warn('Counter update failed:',ce)}
+  try{await incrementCVCounter();}catch(ce){console.warn('Counter update failed:',ce)}
   state.zoom=prev;zoomPrev(0);el.style.transform=`scale(${prev})`;
 }
 // ======================= PREVIEW / CV RENDER =======================
