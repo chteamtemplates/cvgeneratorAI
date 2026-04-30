@@ -72,7 +72,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 <!-- EmailJS SDK for transactional emails — replace with your IDs at https://emailjs.com -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>try{emailjs.init({publicKey:'YOUR_EMAILJS_PUBLIC_KEY'})}catch(e){}</script>
+<script>try{emailjs.init({publicKey:'ktxiuJPdQ-Rwfx45D'})}catch(e){}</script>
 <!-- Firebase SDK -->
 <script type="module">
   // ╔══════════════════════════════════════════════════════╗
@@ -1784,7 +1784,7 @@ function closeAdmin(){$('admin-overlay').classList.remove('open');}
 function sendWelcomeEmail(email,name){
   if(typeof emailjs==='undefined')return;
   try{
-    emailjs.send('YOUR_SERVICE_ID','template_welcome',{
+    emailjs.send('service_tje4uah','template_welcome',{
       to_email:email,to_name:name||'User',
       subject:'Welcome to CVNova!',
       message:'Thank you for joining CVNova. Start building your professional CV today!'
